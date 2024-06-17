@@ -6,9 +6,9 @@ import defalt_user from "../../Assets/images/user_default.png"
 
 export function Header(){
     return(
-        <header className='flex justify-between items-center w-screen p-2 rounded-b-lg px-6 bg-orange-600'>
+        <header className='flex justify-between items-center w-screen p-2 rounded-b-lg px-6 bg-orange-primary'>
             <div className="flex items-center gap-2">
-                <img className="h-9 p-0.5 rounded-full ring-2 bg-gray-500 ring-gray-300 dark:ring-gray-500" src={defalt_user} alt="" />
+                <img className="h-9 p-0.5 rounded-full ring-2 bg-stone-300 ring-stone-300 dark:ring-stone-300" src={defalt_user} alt="" />
                 <div className="font-medium dark:text-white">
                     <a href="#" className="text-base text-gray-100">Jhon Doe</a>
                     <div className="text-xs text-gray-300 dark:text-gray-400">GV Academia</div>
