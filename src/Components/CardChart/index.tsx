@@ -1,12 +1,12 @@
-import clock from '../../Assets/images/anilha.svg';
+import anilha from '../../Assets/images/anilha.svg';
 
 export function CardChart(){
     return(
-       <div className="flex-col overflow-hidden relative bg-orange-primary ">
+       <div className="h-full px-4 py-4 flex-col  relative rounded-lg">
             <p className="text-2xl font-bold">Olá Jackson!</p>
-            <span className="text-lg">Frequência na academia</span>
-            <p className="text-6xl text-violet-primary font-bold">7<span className='font-medium'>x</span></p>
-            <img src={clock} alt="icone de relógio" className='static bottom-2 left-32'/>
-       </div> 
+            <span className="text-lg font-medium">Frequência na academia</span>
+            <p className="[font-size:clamp(1rem,2.8vw,5rem)] text-6xl text-violet-primary font-bold">7<span className='font-medium'>x</span></p>
+            <img src={anilha} alt="icone de relógio" className='absolute h-20 top-10 left-60 -rotate-45 '/>
+       </div>
     )
 }

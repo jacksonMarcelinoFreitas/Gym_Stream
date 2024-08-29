@@ -1,39 +1,48 @@
 import { Header } from "../../Components/Header";
 import { CardChart } from "../../Components/CardChart";
 import { CardChart2 } from "../../Components/CardChart2";
+import { CardChart3 } from "../../Components/CardChart3";
 import { LineChart } from "../../Components/LineChart";
-
-
-export function Home(){
-    return(
-      <div className="h-dvh bg-light-color">
-      <Header />
-        <main className="h-[var(--full-size)] bg-light-color p-4 ">
-            <div className="w-full h-full grid grid-cols-2 grid-flow-row gap-4">
-              <div className="grid grid-cols-2 row-span-1 gap-4">
-                <div className="w-full h-full bg-stone-300">
-                  <CardChart></CardChart>
-                </div>
-                <div className="w-full h-full bg-stone-300">
-                  <CardChart2></CardChart2>
-                </div>
-              </div>      
-              <div className="w-full h-full row-span-1 bg-stone-300">
-              </div>
-              <div className="w-full h-full row-span-2 bg-stone-300">
-                <LineChart></LineChart>
-              </div>
-              <div className="w-full h-full row-span-2 bg-stone-300">
-
-              </div>
-                
-              <div className="w-full h-full row-span-2 bg-stone-300">
-
-              </div>
-              <div className="w-full h-full row-span-2 bg-stone-300">
-              </div>  
-            </div>
-        </main>
-      </div>
-    )
+import { BarChartY } from "../../Components/BarChartY";
+import { BarChartX } from "../../Components/BarChartX";
+import { PizzaChart } from "../../Components/PizzaChart";
+import { DoughnutChart } from "../../Components/DoughnutChart";
+export function Home() {
+	return (
+		<div className="h-screen bg-white">
+			<Header />
+			<main className="h-[calc(100vh-3.5rem)] bg-light-color p-4">
+				<div className="w-full h-full grid grid-cols-2 grid-rows-[1fr_2fr_2fr] gap-4">
+					<div className="grid grid-cols-2 gap-4 row-span-1">
+						<div className="w-full h-full rounded-xl overflow-hidden bg-white">
+							<CardChart />
+						</div>
+						<div className="w-full h-full rounded-xl overflow-hidden bg-white">
+							<CardChart2 />
+						</div>
+					</div>
+					<div className="w-full h-full rounded-xl overflow-hidden bg-white">
+						<CardChart3 />
+					</div>
+					<div className="w-full h-full rounded-xl flex justify-center items-center p-4 bg-white">
+						<LineChart />
+					</div>
+					<div className="w-full h-full rounded-xl flex justify-center items-center p-4 bg-white">
+						<BarChartY />
+					</div>
+					<div className="w-full h-full rounded-xl flex justify-center items-center p-4 bg-white">
+						<BarChartX />
+					</div>
+					<div className="grid grid-cols-2 gap-4">
+						<div className="w-full h-full rounded-xl flex justify-center items-center p-4 bg-white">
+							<PizzaChart />
+						</div>
+						<div className="w-full h-full rounded-xl flex justify-center items-center p-4 bg-white">
+							<DoughnutChart />
+						</div>
+					</div>
+				</div>
+			</main>
+		</div>
+	);
 }

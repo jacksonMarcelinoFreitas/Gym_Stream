@@ -11,11 +11,11 @@ export default {
   theme: {
     colors: {
       transparent: 'transparent',
-      'white': '#fafaf9',
-      'white': '#020617',
+      'white': '#FFFFFF',
+      // 'white': '#ffffff',
 
-      'light-color': '#fafaf9',
-      'dark-color': '#F1F0F0',
+      'light-color': '#F1F0F0',
+      'dark-color': '#FFFFFF',
 
       'orange-primary': '#EB3B00',
       'orange-900': '#431407',

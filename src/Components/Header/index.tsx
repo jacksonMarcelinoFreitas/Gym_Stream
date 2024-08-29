@@ -16,13 +16,13 @@ export function Header(){
             </div>
 
             <div className='flex gap-2 items-center'>
-                <Button 
-                    type="button" 
+                <Button
+                    type="button"
                     value="Configurar alerta"
                     Icon={HiBellAlert}
                 />
                 <ButtonText
-                    type="button" 
+                    type="button"
                     value="Sair"
                     Icon={TbLogout2}
                 />
