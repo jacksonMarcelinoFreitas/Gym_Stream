@@ -14,7 +14,6 @@ class WebSocketService {
             },
             reconnectDelay: 5000, // Tenta reconectar a cada 5 segundos se a conexão for perdida
             onConnect: () => {
-                debugger
                 console.log('Connected');
 
                 if (this.isReconnection) {
@@ -37,7 +36,6 @@ class WebSocketService {
         });
 
         this.client.onWebSocketClose = () => {
-            debugger
             this.isReconnection = true
             console.log('WebSocket connection was lost');
         };          
