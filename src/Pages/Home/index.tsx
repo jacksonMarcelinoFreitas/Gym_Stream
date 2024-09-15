@@ -7,7 +7,15 @@ import { BarChartY } from "../../Components/BarChartY";
 import { BarChartX } from "../../Components/BarChartX";
 import { PizzaChart } from "../../Components/PizzaChart";
 import { DoughnutChart } from "../../Components/DoughnutChart";
+import { useEffect } from "react";
+import { homeService } from "../Service"; 
+
 export function Home() {
+
+	useEffect(() => {
+		homeService.getMovementGymUser();
+	},[])
+	 
 	return (
 		<div className="h-screen bg-white">
 			<Header />
@@ -25,6 +33,7 @@ export function Home() {
 						<CardChart3 />
 					</div>
 					<div className="w-full h-full rounded-xl flex justify-center items-center p-4 bg-white">
+					{/* <div style={{minWidth: '137vh', minHeight: '85vh'}} className="w-full h-full rounded-xl flex justify-center items-center p-4 bg-white"> */}
 						<LineChart />
 					</div>
 					<div className="w-full h-full rounded-xl flex justify-center items-center p-4 bg-white">
