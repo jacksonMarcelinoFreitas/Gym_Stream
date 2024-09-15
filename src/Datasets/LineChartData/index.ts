@@ -1,75 +1,136 @@
-import { faker } from "@faker-js/faker";
-
 export const options = {
 	maintainAspectRatio: false,
 	responsive: true,
 	plugins: {
 		legend: {
-            display: false,
-        },
+			display: false,
+		},
 		customCanvasBackgroundColor: {
 			color: "lightGreen",
 		},
+		tooltip: {
+			callbacks: {
+				label: function (context: any) {
+					const index = context.dataIndex;
+
+					const time = formatHour(parseFloat(context.label.replace(',', '.')));
+					const count = context.dataset.data[index];
+
+					return `Hora: ${time}, Pessoas: ${count}`;
+				},
+				title: function (tooltipItems: any) {
+					const item = tooltipItems[0];
+					const lastIndex = item.dataset.data.length - 1;
+					
+					if (item.dataIndex === lastIndex) {
+					  return 'Útima atualização';
+					}
+					
+					return '';
+				},
+			}
+		},
+		datalabels: {
+			display: false
+		}
 	},
 	scales: {
 		x: {
-            grid: {
-                display: false,
-                drawBorder: false,
-                drawOnChartArea: false,
-                drawTicks: false,
-            },
-            title: {
-                display: true,
-                text: 'Hora',
-				color: '#333', // Cor do texto
-                font: {
-                    size: 16, // Tamanho da fonte
-                    weight: 'bold' as const, // Peso da fonte
-                    family: 'Arial', // Família da fonte
-                },
-                padding: {
-                    top: 10, // Espaçamento acima do título
-                    bottom: 10, // Espaçamento abaixo do título
-                }
-            }
+			type: 'linear' as const,
+			ticks: {
+				stepSize: 1,
+				callback: (value: any) => formatHour(value),
+			},
+			grid: {
+				display: false,
+				drawBorder: false,
+				drawOnChartArea: false,
+				drawTicks: false,
+			},
+			title: {
+				display: true,
+				text: 'Hora',
+				color: '#333',
+				font: {
+					size: 16,
+					weight: 'bold' as const,
+					family: 'Arial',
+				},
+				padding: {
+					top: 10,
+					bottom: 10,
+				}
+			}
 		},
 		y: {
 			title: {
 				display: true,
 				text: "Pessoas",
-				color: '#333', // Cor do texto
-                font: {
-                    size: 16, // Tamanho da fonte
-                    weight: 'bold' as const, // Peso da fonte
-                    family: 'Arial', // Família da fonte
-                },
-                padding: {
-                    top: 10, // Espaçamento acima do título
-                    bottom: 10, // Espaçamento abaixo do título
-                }
+				color: '#333',
+				font: {
+					size: 16,
+					weight: 'bold' as const,
+					family: 'Arial',
+				},
+				padding: {
+					top: 10,
+					bottom: 10,
+				}
 			},
+			ticks: {
+				callback: function(value: any) {
+					if (Number.isInteger(value)) {
+						return value;
+					}
+					return null;
+				}
+			},
+			beginAtZero: true
 		},
 	},
 };
 
-const labels = [
-	5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-];
+const labels: any = [];
 
 export const data = {
 	labels,
 	datasets: [
 		{
-			data: labels.map(() => faker.datatype.number({ min: 0, max: 75 })),
+			data: [],
 			borderColor: "rgb(88, 0, 235)",
 			backgroundColor: "rgb(88, 0, 235)",
 			pointStyle: "circle",
-			borderJoinStyle: "round" as const, // Arredonda as junções das linhas
-			pointRadius: 6 as const, // Tamanho das bolinhas nos pontos
-			pointHoverRadius: 16 as const, // Tamanho das bolinhas ao passar o mouse
-			borderCapStyle: "round" as const, // Arredonda as pontas da linha
-			tension: 0.3, // Para curvas suaves
+			borderJoinStyle: "round" as const,
+			pointHoverRadius: 6 as const,
+			borderCapStyle: "round" as const,
+			tension: 0.05, // Para curvas suaves,
+
+			//Destaca o último ponto
+			pointBackgroundColor: function(context: any) {
+				const index = context.dataIndex;
+				const lastIndex = context.dataset.data.length - 1;
+
+				return index === lastIndex ? 'green' : 'blue';
+			},
+			pointBorderColor: function(context: any) {
+				const index = context.dataIndex;
+				const lastIndex = context.dataset.data.length - 1;
+				
+				return index === lastIndex ? 'black' : 'blue';
+			},
+			pointRadius: function(context: any) {
+				const index = context.dataIndex;
+				const lastIndex = context.dataset.data.length - 1;
+
+				return index === lastIndex ? 6 : 3;
+			},
 		},
 	],
 };
+
+function formatHour(hour: number): string {
+    const hours = Math.floor(hour);
+    const minutes = Math.floor((hour - hours) * 60);
+
+    return `${hours}:${minutes.toString().padStart(2, '0')}`;
+}
