@@ -11,7 +11,7 @@ export function Button({ Icon, value, type, disabled, onClick, className, isLoad
             type={type}
             {...rest}
             className={classNames(
-                "w-1/2 px-2.5 py-2.5 text-base font-semibold text-center gap-2 items-center text-white bg-violet-primary rounded-lg hover:bg-violet-600 focus:ring-2 focus:outline-none focus:ring-violet-300 dark:bg-violet-600 dark:hover:bg-violet-700 dark:focus:ring-violet-800",
+                "w-1/2 px-2.5 py-2.5 text-base font-semibold text-center gap-2 items-center text-white rounded-lg bg-orange-400 cursor-not-allowed hover:bg-orange-400 focus:ring-2 focus:outline-none focus:ring-orange-300",
                 className
               )}
             >

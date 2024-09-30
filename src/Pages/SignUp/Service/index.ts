@@ -3,18 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../../../Services/api";
 import { toast } from "react-toastify";
 
-class SignUpService {
-    public async handleSignUp(data: IRegisterUser): Promise<void> {
-        const navigate = useNavigate();
+export const useSignUp = () => {
+    const navigate = useNavigate();
+
+    const handleSignUp = async (data: IRegisterUser) => {
         try {
             const response = await api.post(`/v1/auth/register`, {
                 name: data.name,
                 password: data.password,
-                birthday: data.birthday,
-                gender: data.gender
             });
-            if (response.status === 201) {
-                navigate("/register/ConfirmEmail");
+                if (response.status === 201) {
+                navigate("/register/confirmEmail");
             } else {
                 toast.error("Ocorreu um erro ao registrar o usuário.");
             }
@@ -24,17 +23,16 @@ class SignUpService {
                     toast.error(`${error.response.data.message}`);
                 }
             } else {
-                toast.error('Não foi possível fazer o cadastro!');
+                toast.error("Não foi possível fazer o cadastro!");
             }
         }
-    }
+    };
 
-    public async handleConfirmEmail(data: IRegisterUser): Promise<void> {
-        const navigate = useNavigate();
+    const handleConfirmEmail = async (data: IRegisterUser) => {
         try {
             const response = await api.post(`/v1/auth/register/confirmEmail`, {
                 email: data.email,
-                token: data.tokenEmail
+                token: data.tokenEmail,
             });
             if (response.status === 201) {
                 toast.success("Registro realizado com sucesso!");
@@ -48,10 +46,10 @@ class SignUpService {
                     toast.error(`${error.response.data.message}`);
                 }
             } else {
-                toast.error('Não foi possível fazer o cadastro!');
+                toast.error("Não foi possível confirmar o email!");
             }
         }
-    }
-};
+    };
 
-export const signUpService = new SignUpService();
+    return { handleSignUp, handleConfirmEmail };
+}

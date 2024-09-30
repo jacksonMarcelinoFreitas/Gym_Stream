@@ -33,3 +33,17 @@ export function CustomDatepicker({id, htmlFor, valueLabel, value, error, touched
         </div>
     )
 }
+
+//Ex.: implementação
+
+{/* <CustomDatepicker
+    id='birthday'
+    type='datepicker'
+    htmlFor='birthday'
+    valueLabel='Data de nascimento'
+    value={formik.values.birthday}
+    error={formik.errors.birthday}
+    placeholder='Selecione uma data'
+    touched={formik.touched.birthday}
+    onSelectedDateChanged={(date: Date) => formik.setFieldValue('birthday', date.toISOString().split('T')[0])}
+/> */}

@@ -1,18 +1,15 @@
 import login_image from '../../Assets/images/login_image.png';
 import email_image from '../../Assets/images/email_image.png';
-import { signUpService } from '../SignUp/Service';
-import { schema } from '../../Utils/form-schema-signUp';
+import { schema } from '../../Utils/form-schema-confirmEmail';
 import { Button } from "../../Components/Button";
-import { HiMail } from "react-icons/hi";
+import { MdMarkEmailRead } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
+import { useSignUp } from '../SignUp/Service';
 import { Input } from "../../Components/Input"
-import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
-import { useState } from 'react';
 
 export function ConfirmEmail() {
-	// const { email, setEmail } = useState('')
-	// const { token, setToken } = useState('')
+	const { handleConfirmEmail } = useSignUp()
 
 	const navigate = useNavigate()
 	const formik = useFormik(
@@ -26,27 +23,17 @@ export function ConfirmEmail() {
 			setSubmitting(true);
 			const { tokenEmail } = values;
 			try {
-				await new Promise(resolve => setTimeout(resolve, 10000));
-				signUpService.handleConfirmEmail({ tokenEmail })
-				toast.success("Cadastro realizado com sucesso!");
-			} catch(error: any) {
-				if(error.response){
-					if(error.response == 403){
-						toast.error(error.response.data.message);
-					}
-				}
-				else {
-					toast.error(`${error}`);
-				}
+				await handleConfirmEmail({ tokenEmail })
+			} catch (error) {
+				console.error("Erro no registro:", error);
+			} finally {
+				setSubmitting(false);
 			}
-			setSubmitting(false);
 		},
 	})
 
 	function resendEmailtoken(){
-		// const email = 'teste@gmail.com'
-		window.alert('teste')
-		// signUpService.handleConfirmEmail({ email })
+
 	}
 
 	return (
@@ -58,7 +45,7 @@ export function ConfirmEmail() {
 					<Input
 						type='text'
 						id='tokenEmail'
-						Icon={HiMail}
+						Icon={MdMarkEmailRead}
 						htmlFor='tokenEmail'
 						valueLabel='Por favor, informe o token enviado ao seu e-mail'
 						onBlur={formik.handleBlur}
@@ -73,7 +60,7 @@ export function ConfirmEmail() {
 							type='button'
 							value='Cancelar'
 							onClick={() => { navigate('/register') }}
-							className='text-stone-700 bg-gray-200 shadow-xl hover:bg-gray-400 focus:ring-2 focus:outline-none focus:ring-gray-500'
+							className='text-stone-700 bg-orange-900 shadow-xl hover:bg-orange-500 focus:ring-2 focus:outline-none focus:ring-gray-500'
 						/>
 						<Button
 							type='submit'
@@ -90,7 +77,7 @@ export function ConfirmEmail() {
 				style={{ backgroundImage: `url(${login_image})`}}
 				className="relative h-full w-2/5 flex flex-col items-center justify-evenly bg-stone-200 rounded-r-2xl overflow-hidden bg-no-repeat bg-center bg-cover rounded-l-2xl"
 			>
-				<div className='absolute w-full h-full z-0 bg-gradient-to-t from-orange-400 from-0%' ></div>
+			<div className='absolute w-full h-full z-0 bg-gradient-to-t from-orange-400 from-0%' ></div>
 			</div>
 		</div>
 	);

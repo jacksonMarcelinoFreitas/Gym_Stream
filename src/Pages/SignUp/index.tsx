@@ -1,46 +1,36 @@
 import men_woman_gym from '../../Assets/images/men_woman_gym.png';
-import { CustomDatepicker } from '../../Components/Datepicker';
-import { signUpService } from '../../Pages/SignUp/Service';
+import { useSignUp } from '../../Pages/SignUp/Service';
 import logo from '../../Assets/images/gym_stream_logo.svg';
 import { schema } from '../../Utils/form-schema-signUp';
 import { Button } from "../../Components/Button";
 import { HiMail, HiKey } from "react-icons/hi";
-import {Label, Select } from "flowbite-react";
+import { FaUser } from "react-icons/fa";
 import { Input } from "../../Components/Input"
-import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
+import { toast } from 'react-toastify';
 
 export function SignUp() {
+	const { handleSignUp } = useSignUp()
 	const formik = useFormik(
 	{
 		initialValues:{
 			name:'',
 			email:'',
-			gender:'',
 			password:'',
-			birthday: '',
 			newPassword:''
 		},
 		validationSchema: schema,
 		onSubmit:
 		async (values, { setSubmitting }) => {
 			setSubmitting(true);
-			const { name, email, password, newPassword, birthday, gender } = values;
+			const { name, email, password, newPassword } = values;
 			try {
-				await new Promise(resolve => setTimeout(resolve, 10000));
-				signUpService.handleSignIn({ name, email, password, newPassword, birthday, gender })
-				toast.success("Cadastro realizado com sucesso!");
-			} catch(error: any) {
-				if(error.response){
-					if(error.response == 403){
-						toast.error(error.response.data.message);
-					}
-				}
-				else {
-					toast.error(`${error}`);
-				}
+				await handleSignUp({  name, email, password, newPassword });
+			} catch (error) {
+				console.error("Erro no registro:", error);
+			} finally {
+				setSubmitting(false);
 			}
-			setSubmitting(false);
 		},
 	})
 
@@ -57,7 +47,7 @@ export function SignUp() {
 					<Input
 						id='name'
 						type='text'
-						Icon={HiMail}
+						Icon={FaUser}
 						htmlFor='name'
 						valueLabel='Nome'
 						placeholder='Jhon Doe'
@@ -107,42 +97,6 @@ export function SignUp() {
 						value={formik.values.newPassword}
 						touched={formik.touched.newPassword}
 					/>
-
-					<CustomDatepicker
-						id='birthday'
-						type='datepicker'
-						htmlFor='birthday'
-						valueLabel='Data de nascimento'
-						value={formik.values.birthday}
-						error={formik.errors.birthday}
-						placeholder='Selecione uma data'
-						touched={formik.touched.birthday}
-						onSelectedDateChanged={(date: Date) => formik.setFieldValue('birthday', date.toISOString().split('T')[0])}
-					/>
-
-					<div className='w-full flex flex-col gap-1'>
-						<Label
-							htmlFor='gender'
-							value='Sexo'
-							className='block text-sm font-medium text-gray-900 dark:text-white'
-						/>
-						<Select
-							required
-							id='gender'
-							value={formik.values.gender}
-							onChange={(e) => {
-								formik.setFieldValue('gender', e.target.value);
-							}}
-							onBlur={formik.handleBlur}
-						>
-							<option value="" label="Selecione o gênero" />
-							<option value="masculino" label="Masculino">Masculino</option>
-							<option value="feminino" label="Feminino">Feminino</option>
-						</Select>
-						{formik.errors.gender && formik.touched.gender ?
-							(<span className='text-sm text-orange-600'>{formik.errors.gender}</span>) : null
-						}
-					</div>
 
 					<Button
 						type='submit'

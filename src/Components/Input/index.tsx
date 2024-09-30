@@ -11,8 +11,8 @@ export function Input({ Icon, htmlFor, valueLabel, placeholder, id, type, value,
         )}
         <div className="relative">
           {Icon && (
-            <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-              <Icon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+            <div className="absolute inset-y-0 start-0 z-10 flex items-center ps-3.5 pointer-events-none">
+              <Icon id='icone' onClick={onClick} className="w-4 h-4 text-gray-500 dark:text-gray-400 hover:" />
             </div>
           )}
           <input
@@ -24,7 +24,7 @@ export function Input({ Icon, htmlFor, valueLabel, placeholder, id, type, value,
             onChange={onChange}
             disabled={disabled}
             placeholder={placeholder}
-            className="bg-white border border-orange-200 text-gray-900 text-sm rounded-lg focus:ring-orange-300 focus:border-orange-300 block w-full ps-10 p-2.5"
+            className="z-0 bg-white border border-orange-200 text-gray-900 text-sm rounded-lg focus:ring-orange-300 focus:border-orange-300 block w-full ps-10 p-2.5"
           />
         </div>
         {
@@ -35,3 +35,29 @@ export function Input({ Icon, htmlFor, valueLabel, placeholder, id, type, value,
     </>
   );
 }
+
+//Ex.: input do tipo select
+
+{/* <div className='w-full flex flex-col gap-1'>
+  <Label
+    htmlFor='gender'
+    value='Sexo'
+    className='block text-sm font-medium text-gray-900 dark:text-white'
+  />
+  <Select
+    required
+    id='gender'
+    value={formik.values.gender}
+    onChange={(e) => {
+      formik.setFieldValue('gender', e.target.value);
+    }}
+    onBlur={formik.handleBlur}
+  >
+    <option value="" label="Selecione o gênero" />
+    <option value="masculino" label="Masculino">Masculino</option>
+    <option value="feminino" label="Feminino">Feminino</option>
+  </Select>
+  {formik.errors.gender && formik.touched.gender ?
+    (<span className='text-sm text-orange-600'>{formik.errors.gender}</span>) : null
+  }
+</div> */}

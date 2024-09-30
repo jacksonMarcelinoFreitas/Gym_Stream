@@ -1,14 +1,14 @@
 import login_image from '../../Assets/images/login_image.png';
-import { signInService } from '../../Pages/SignIn/Service';
 import logo from '../../Assets/images/gym_stream_logo.svg';
-import { schema } from '../../Utils/form-schema-signUp';
+import { schema } from '../../Utils/form-schema-signIn';
 import { Button } from "../../Components/Button";
 import { HiMail, HiKey } from "react-icons/hi";
 import { Input } from "../../Components/Input"
-import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
+import { useAuth } from '../../Hooks/auth';
 
 export function SignIn() {
+	const { signIn } = useAuth();
 	const formik = useFormik(
 	{
 		initialValues:{
@@ -21,17 +21,11 @@ export function SignIn() {
 			setSubmitting(true);
 			const { email, password } = values;
 			try {
-				await new Promise(resolve => setTimeout(resolve, 10000));
-				signInService.handleSignIn({ email, password })
-			} catch(error: any) {
-				if(error.response){
-					if(error.response == 403){
-						toast.error(error.response.data.message);
-					}
-				}
-				else {
-					toast.error(`${error}`);
-				}
+				await signIn({ email, password });
+			} catch (error) {
+				console.error("Erro no login:", error);
+			} finally {
+				setSubmitting(false);
 			}
 			setSubmitting(false);
 		},
@@ -58,16 +52,16 @@ export function SignIn() {
 					/>
 
 					<Input
-						Icon={HiKey}
 						id='password'
-						type='password'
-						valueLabel='Senha'
 						htmlFor='password'
+						valueLabel='Senha'
 						onBlur={formik.handleBlur}
 						value={formik.values.password}
 						onChange={formik.handleChange}
 						error={formik.errors.password}
 						touched={formik.touched.password}
+						type='password'
+						Icon={HiKey}
 					/>
 
 					<Button
