@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode  } from 'react';
 import { IAuthContext }  from '../Interfaces/IAuthContext';
-import { ICredentials } from '../Interfaces/Icredentials'
+import { ICredentials } from '../Interfaces/ICredentials'
 import { IJwtPayload } from '../Interfaces/IJwtPayload'
 import { IUser } from '../Interfaces/IUser'
 import { toast } from 'react-toastify';
@@ -16,11 +16,10 @@ function AuthProvider({children}: {children: ReactNode}){
         token: '',
     });
 
-    async function signIn({ email, password }: ICredentials){
+    async function signIn({ login, password, isLoginConfirmation, customerGym }: ICredentials){
 
       try {
-        // await new Promise(resolve => setTimeout(resolve, 10000));
-        const response = await api.post('/v1/auth/login', { email, password });
+        const response = await api.post('/v1/auth/login', { login, password, isLoginConfirmation, customerGym });
 
         const { token } = response.data;
 
@@ -41,6 +40,8 @@ function AuthProvider({children}: {children: ReactNode}){
 
         api.defaults.headers.common['Authorization'] = token;
 
+        return { status: response.status, data: response.data };
+
       } catch (error: any) {
 
         if (error.response) {
@@ -49,9 +50,12 @@ function AuthProvider({children}: {children: ReactNode}){
             toast.error(`${error.response.data.message}`);
           }
 
+          return { status: error.response.status, data: error.response.data };
+
         }else{
 
           toast.error('Não foi possível fazer login!');
+          throw error;
 
         }
       }
@@ -85,8 +89,8 @@ function AuthProvider({children}: {children: ReactNode}){
 
     return(
       //Aqui todas as páginas filhas herdarão as informações de user (contexto)
-      <AuthContext.Provider value={{ signIn, signOut, user: data.user}}>
-          {children}
+      <AuthContext.Provider value={{ signIn, signOut, user: data.user }}>
+            {children}
       </AuthContext.Provider>
     )
 }
@@ -100,3 +104,6 @@ function useAuth(): IAuthContext{
 }
 
 export { AuthProvider, useAuth }
+
+        // await new Promise(resolve => setTimeout(resolve, 10000));
+

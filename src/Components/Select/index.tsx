@@ -35,3 +35,29 @@ export function Input({ Icon, htmlFor, valueLabel, placeholder, id, type, value,
     </>
   );
 }
+
+//Ex.: input do tipo select
+
+{/* <div className='w-full flex flex-col gap-1'>
+  <Label
+    htmlFor='gender'
+    value='Sexo'
+    className='block text-sm font-medium text-gray-900 dark:text-white'
+  />
+  <Select
+    required
+    id='gender'
+    value={formik.values.gender}
+    onChange={(e) => {
+      formik.setFieldValue('gender', e.target.value);
+    }}
+    onBlur={formik.handleBlur}
+  >
+    <option value="" label="Selecione o gênero" />
+    <option value="masculino" label="Masculino">Masculino</option>
+    <option value="feminino" label="Feminino">Feminino</option>
+  </Select>
+  {formik.errors.gender && formik.touched.gender ?
+    (<span className='text-sm text-orange-600'>{formik.errors.gender}</span>) : null
+  }
+</div> */}

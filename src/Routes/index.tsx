@@ -1,4 +1,4 @@
-// import { webSocketService } from "../Services/webSocketService";
+import { webSocketService } from "../Services/webSocketService";
 import { BrowserRouter } from "react-router-dom";
 import { AuthRoutes } from "./auth.routes";
 import { AppRoutes } from "./app.routes";
@@ -12,10 +12,15 @@ export function Routes(){
   const { user } = useAuth();
   return(
     <BrowserRouter>
-      {!user ? <AuthRoutes /> :
-        user.role.includes('CLIENT') ? <AppRoutes/> : <AdminRoutes/>
-      }
-      {/* <AuthRoutes/> */}
+      {!user ? (
+        <AuthRoutes />
+      ) : user.role.includes('USER') ? (
+        <AppRoutes />
+      ) : user.role.includes('ADMIN') ? (
+        <AdminRoutes />
+      ) : (
+        <AuthRoutes /> // Caso o usuário tenha uma role diferente ou não esteja autorizado.
+      )}
     </BrowserRouter>
   )
 }

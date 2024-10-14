@@ -1,15 +1,18 @@
 import login_image from '../../Assets/images/login_image.png';
 import email_image from '../../Assets/images/email_image.png';
 import { schema } from '../../Utils/form-schema-confirmEmail';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from "../../Components/Button";
 import { MdMarkEmailRead } from "react-icons/md";
-import { useNavigate } from 'react-router-dom';
-import { useSignUp } from '../SignUp/Service';
 import { Input } from "../../Components/Input"
+import { useSignUp } from '../SignUp/Service';
 import { useFormik } from 'formik';
 
 export function ConfirmEmail() {
-	const { handleConfirmEmail } = useSignUp()
+	const location = useLocation();
+	const { email } = location.state || {};
+
+	const { handleConfirmEmail } = useSignUp();
 
 	const navigate = useNavigate()
 	const formik = useFormik(
@@ -23,7 +26,7 @@ export function ConfirmEmail() {
 			setSubmitting(true);
 			const { tokenEmail } = values;
 			try {
-				await handleConfirmEmail({ tokenEmail })
+				await handleConfirmEmail({ tokenEmail, email })
 			} catch (error) {
 				console.error("Erro no registro:", error);
 			} finally {

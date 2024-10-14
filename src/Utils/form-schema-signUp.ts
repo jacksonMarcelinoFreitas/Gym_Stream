@@ -18,7 +18,7 @@ export const schema = Yup.object().shape({
     .required("E-mail é obrigatório"),
 
   password: Yup.string()
-    .min(8, "Mínimo de caracteres aceitável é 8")
+    .min(4, "Mínimo de caracteres aceitável é 4")
     .max(55, "Máximo de caracteres aceitável é 55")
     .matches(
       /^(?=.*[A-Z])(?=.*[0-9]).*$/,
@@ -30,12 +30,14 @@ export const schema = Yup.object().shape({
     .oneOf([Yup.ref('password')], 'As senhas devem ser iguais')
     .required("Confirme a senha, por favor!"),
 
+  readTerms: Yup.boolean()
+    .oneOf([true], "Você deve aceitar os termos e condições")
+    .required("Aceitar os termos é obrigatório"),
+
+  isUserAdmin: Yup.boolean()
+
   // birthday: Yup.date()
   //   .required('Data de aniversário é obrigatória')
   //   .max(new Date(), 'A data de nascimento não pode ser no futuro'),
-
-  // gender: Yup.string()
-  //   .oneOf(['masculino', 'feminino'], 'O gênero deve ser "masculino" ou "feminino"')
-  //   .required("Gênero é obrigatório"),
 
 });

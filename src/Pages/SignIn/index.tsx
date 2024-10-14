@@ -5,10 +5,10 @@ import { Button } from "../../Components/Button";
 import { HiMail, HiKey } from "react-icons/hi";
 import { Input } from "../../Components/Input"
 import { useFormik } from 'formik';
-import { useAuth } from '../../Hooks/auth';
+import { useNavigate } from 'react-router-dom';
 
 export function SignIn() {
-	const { signIn } = useAuth();
+	const navigate = useNavigate()
 	const formik = useFormik(
 	{
 		initialValues:{
@@ -20,13 +20,7 @@ export function SignIn() {
 		async (values, { setSubmitting }) => {
 			setSubmitting(true);
 			const { email, password } = values;
-			try {
-				await signIn({ email, password });
-			} catch (error) {
-				console.error("Erro no login:", error);
-			} finally {
-				setSubmitting(false);
-			}
+			navigate('/login/SelectGym', { state: { login: email, password } })
 			setSubmitting(false);
 		},
 	})

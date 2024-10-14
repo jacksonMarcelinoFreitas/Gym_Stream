@@ -1,6 +1,6 @@
-import { IButtonTextTypes } from './type';
+import { IButton } from '../../Interfaces/IButton';
 
-export function ButtonText({ Icon, value, type, disabled, onClick, className, isLoading, ...rest }: IButtonTextTypes) {
+export function ButtonText({ Icon, value, type, disabled, onClick, className, isLoading, ...rest }: IButton) {
     return (
     <>
         {isLoading ?
@@ -18,6 +18,8 @@ export function ButtonText({ Icon, value, type, disabled, onClick, className, is
             <button
                 className="h-min px-0.5 py-0.5 text-base font-semibold text-center gap-2 inline-flex items-center text-white rounded-lg  focus:ring-2 focus:outline-none focus:ring-orange-300 dark:bg-orange-900 dark:hover:bg-orange-600 dark:focus:ring-orange-800"
                 type={type}
+                onClick={onClick}
+                {...rest}
             >
                 {Icon&& <Icon size={22}/>}
                 {value}

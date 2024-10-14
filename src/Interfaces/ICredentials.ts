@@ -1,4 +1,6 @@
 export interface ICredentials {
-    email: string;
+    login: string;
     password: string;
+    isLoginConfirmation: boolean;
+    customerGym: string;
 }
