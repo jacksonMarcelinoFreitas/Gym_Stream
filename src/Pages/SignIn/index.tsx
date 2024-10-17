@@ -5,10 +5,10 @@ import { Button } from "../../Components/Button";
 import { HiMail, HiKey } from "react-icons/hi";
 import { Input } from "../../Components/Input"
 import { useFormik } from 'formik';
-import { useNavigate } from 'react-router-dom';
+import { useSignIn } from './Service/index';
 
 export function SignIn() {
-	const navigate = useNavigate()
+	const { handleSignIn }= useSignIn()
 	const formik = useFormik(
 	{
 		initialValues:{
@@ -18,9 +18,13 @@ export function SignIn() {
 		validationSchema: schema,
 		onSubmit:
 		async (values, { setSubmitting }) => {
-			setSubmitting(true);
 			const { email, password } = values;
-			navigate('/login/SelectGym', { state: { login: email, password } })
+			setSubmitting(true);
+			try {
+				await handleSignIn({login: email, password, isLoginConfirmation: false});
+			} catch (error: any) {
+			
+			}
 			setSubmitting(false);
 		},
 	})

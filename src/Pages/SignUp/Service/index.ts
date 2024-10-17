@@ -16,7 +16,7 @@ export const useSignUp = () => {
                 isUserAdmin: data.isUserAdmin || false,
             });
             if (response.status === 201) {
-                // navigate("/register/confirmEmail");
+                toast.success(`${response.data.message}`);
                 navigate("/register/confirmEmail", { state: { email: data.email } })
             } else {
                 toast.error("Ocorreu um erro ao registrar o usuário.");
@@ -42,21 +42,21 @@ export const useSignUp = () => {
             });
             if (response.status === 200) {
                 toast.success("Registro realizado com sucesso!");
-                navigate("/");
             } else {
                 toast.error("O token informado está incorreto, por favor informe o correto.");
             }
+            return { data: response.data, status: response.status };
         } catch (error: any) {
             if (error.response) {
                 if (error.response.status === 403) {
-                    toast.error(`${error.response.data.message}`);
-                    navigate("/");
+                    toast.error(`${error.response.data[0].message}`);
                 } else if ((error.response.status === 400)) {
-                    toast.error(`${error.response.data.message}`);
+                    toast.error(`${error.response.data[0].message}`);
                 }
             } else {
-                toast.error(`${error.response.data.message}`);
+                toast.error(`${error.response.data[0].message}`);
             }
+            return { data: null, status: error.response ? error.response.status : 500 };
         }
     };
 

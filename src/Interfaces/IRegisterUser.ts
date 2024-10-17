@@ -5,5 +5,5 @@ export interface IRegisterUser {
     newPassword?: string;
     tokenEmail?: string;
     readTerms?: boolean,
-    isUserAdmin?: boolean,
+    isUserAdmin?: boolean
 }

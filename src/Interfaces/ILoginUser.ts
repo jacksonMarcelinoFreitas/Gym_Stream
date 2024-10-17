@@ -1,4 +1,4 @@
-export interface ICredentials {
+export interface ILoginUser {
     login?: string;
     password?: string;
     isLoginConfirmation?: boolean;
