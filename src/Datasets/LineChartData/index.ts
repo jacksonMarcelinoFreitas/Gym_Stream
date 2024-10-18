@@ -5,6 +5,14 @@ export const options = {
 		legend: {
 			display: false,
 		},
+		title: {
+			text: "Monitoramento em tempo real",
+			display: true,
+			align: 'center' as const,
+			color: '#000000',
+			padding: { bottom: 20 },
+			font: { size: 16, weight: 'normal' } as const
+		  },
 		customCanvasBackgroundColor: {
 			color: "lightGreen",
 		},

@@ -1,6 +1,7 @@
-import { faker } from '@faker-js/faker';
+import { IUser } from "../../Interfaces/IUser";
+import { homeService } from "../../Pages/Service";
 
-  export const options = {
+export const options = {
     maintainAspectRatio: false,
     responsive: true,
     indexAxis: 'y' as const,
@@ -17,8 +18,12 @@ import { faker } from '@faker-js/faker';
         position: 'top' as const,
       },
       title: {
-        display: false,
-        text: 'Chart.js Line Chart',
+        display: true,
+        text: 'Quantidade de pessoas por periodo do dia anterior',
+        align: 'center',
+        color: '#000000',
+        padding: { bottom: 20 },
+        font: { size: 16, weight: 'normal' }
       },
       datalabels: {
         anchor: 'end' as const,
@@ -76,7 +81,7 @@ import { faker } from '@faker-js/faker';
         },
         ticks: {
           // Ajusta o espaçamento entre os rótulos e as barras
-          padding: 12, // Aumenta o espaçamento dos rótulos
+          padding: 20, // Aumenta o espaçamento dos rótulos
           font: {
               size: 14, // Tamanho da fonte dos rótulos do eixo Y
               weight: 'bold' as const,
@@ -86,15 +91,18 @@ import { faker } from '@faker-js/faker';
       },
     },
   };
-
-  const labels = ['Manhã', 'Tarde', 'Noite'];
+  const storedUser = localStorage.getItem("@gymStream:user");
+  const user: IUser = storedUser ? JSON.parse(storedUser) : null;
+  const result = await homeService.getNumberPeopleByPeriodPreviousDay(user)
+  const labels = result.period
+  const numberPeople = result.numberPeople
 
   export const data = {
     labels,
     datasets: [
       {
         label: 'Dataset 1',
-        data: labels.map(() => faker.datatype.number({ min: 0, max: 300 })),
+        data: numberPeople,
         borderColor: "rgb(88, 0, 235)",
         backgroundColor: "rgb(88, 0, 235)",
         borderRadius: 6, // Arredonda as pontas das barras
