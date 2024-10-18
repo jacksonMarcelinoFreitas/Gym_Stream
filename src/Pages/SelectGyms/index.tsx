@@ -91,7 +91,7 @@ export function SelectGyms() {
 				console.log(response)
 
 				if(response.status === 200){
-					navigate('/')
+					navigate('/login')
 				}
 				
 			} catch (error) {
@@ -153,7 +153,7 @@ export function SelectGyms() {
 						<Button
 							type='button'
 							value={listGymUser.listGyms.length > 0 ? 'Cancelar' : 'Voltar'}
-							onClick={() => { navigate('/') }}
+							onClick={() => { navigate('/login') }}
 							className='text-stone-700 bg-orange-900 shadow-xl hover:bg-orange-500 focus:ring-2 focus:outline-none focus:ring-gray-500'
 						/>
 						{listGymUser.listGyms.length > 0 && (

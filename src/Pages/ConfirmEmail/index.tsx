@@ -48,7 +48,7 @@ export function ConfirmEmail() {
 					if(data.role === 'ADMIN'){
 						toast.warn('Entre em contato com o suporte para ativar o usuário!')
 					} else {
-						navigate('/')
+						navigate('/login')
 					}
 				}
 			} catch (error) {
@@ -72,7 +72,7 @@ export function ConfirmEmail() {
 						<Button
 							type='button'
 							value='Voltar'
-							onClick={() => { navigate('/') }}
+							onClick={() => { navigate('/login') }}
 							className='w-1/4 text-stone-700 bg-orange-900 shadow-xl hover:bg-orange-500 focus:ring-2 focus:outline-none focus:ring-gray-500'
 						/> 
 					</>

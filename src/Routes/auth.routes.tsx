@@ -9,10 +9,10 @@ export function AuthRoutes(){
     return(
       <Routes>
         <Route path="*" element={ <SignIn/> } />
-        <Route path="/" element={ <SignIn/> } />
-        <Route path="/login/selectGym" element={ <SelectGyms/> } />
+        <Route path="/login" element={ <SignIn/> } />
+        <Route path="/login/select-gym" element={ <SelectGyms/> } />
         <Route path="/register" element={ <SignUp/> } />
-        <Route path="/register/confirmEmail" element={ <ConfirmEmail/> } />
+        <Route path="/register/confirm-email" element={ <ConfirmEmail/> } />
       </Routes>
     )
   }
