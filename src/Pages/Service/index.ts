@@ -21,9 +21,9 @@ class HomeService {
                     movementGymUser.entryDateTime = this.convertToLocalUTC(movementGymUser.entryDateTime)
                     if (movementGymUser.departureDateTime)  {
                         movementGymUser.departureDateTime = this.convertToLocalUTC(movementGymUser.departureDateTime)
-                    } 
+                    }
                 })
-                
+
                 this.movementGymUserListSubject.next(movementGymUserList);
                 this.gymSubject.next(gym)
             })
@@ -54,7 +54,7 @@ class HomeService {
             movementGymUser.entryDateTime = this.convertToLocalUTC(movementGymUser.entryDateTime)
             if (movementGymUser.departureDateTime)  {
                 movementGymUser.departureDateTime = this.convertToLocalUTC(movementGymUser.departureDateTime)
-            } 
+            }
         })
 
         movementGymUserToUpdate.forEach(movementGymUser => {
@@ -80,7 +80,7 @@ class HomeService {
         const endDateUTC = new Date(Date.UTC(localDateEndHour.getFullYear(), localDateEndHour.getMonth(), localDateEndHour.getDate(), parseInt(localEndHour) + timezoneOffset, parseInt(localEndMinute), 0));
         const startTime = startDateUTC.toISOString().slice(0, 19);
         const finishTime = endDateUTC.toISOString().slice(0, 19);
-    
+
         return { startTime, finishTime };
     }
 
@@ -95,7 +95,7 @@ class HomeService {
         const hours = String(localDate.getHours()).padStart(2, '0');
         const minutes = String(localDate.getMinutes()).padStart(2, '0');
         const seconds = String(localDate.getSeconds()).padStart(2, '0');
-    
+
         return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
     }
 

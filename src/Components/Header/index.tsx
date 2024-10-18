@@ -1,10 +1,19 @@
-import { Button } from "../Button"
+import defalt_user from "../../Assets/images/user_default.png"
+import { Modal } from "flowbite-react/components/Modal";
+import { HiBellAlert } from "react-icons/hi2";
 import { ButtonText } from "../ButtonText";
 import { TbLogout2 } from "react-icons/tb";
-import { HiBellAlert } from "react-icons/hi2";
-import defalt_user from "../../Assets/images/user_default.png"
+import { useAuth } from "../../Hooks/auth";
+import { Button } from "../Button"
+import { useState } from "react";
 
 export function Header(){
+    const { signOut } = useAuth();
+    const [openSignOutModal, setOpenSignOutModal] = useState(false);
+
+    const handleOpenSignOutModal = () => {
+		setOpenSignOutModal(true)
+	}
     return(
         <header className='flex justify-between items-center w-screen p-2 rounded-b-lg px-6 bg-orange-primary'>
             <div className="flex items-center gap-2">
@@ -25,8 +34,20 @@ export function Header(){
                     type="button"
                     value="Sair"
                     Icon={TbLogout2}
+                    onClick={handleOpenSignOutModal}
                 />
             </div>
+
+            <Modal dismissible show={openSignOutModal} onClose={() => setOpenSignOutModal(false)}>
+                <Modal.Header>Deseja mesmo sair?</Modal.Header>
+                    {/* <Modal.Body>
+                        colocar imagem aqui
+                    </Modal.Body> */}
+                <Modal.Footer>
+                    <Button onClick={() => setOpenSignOutModal(false)} value='Cancelar' className='bg-orange-900 w-full hover:bg-orange-700'/>
+                    <Button onClick={() => signOut()} value='Sair' className='bg-orange-primary w-full hover:bg-orange-700'/>
+                </Modal.Footer>
+            </Modal>
         </header>
     )
 }

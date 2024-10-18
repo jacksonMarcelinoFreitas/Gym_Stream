@@ -1,11 +1,11 @@
-import { Line } from 'react-chartjs-2';
-import { data, options } from '../../Datasets/LineChartData';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ChartData } from 'chart.js';
-import { useEffect, useState } from 'react';
-import { homeService } from '../../Pages/Service';
 import { IMovementGymUser } from '../../Interfaces/IMovementGymUser';
 import { ILineChartLabelsValues } from './IlineChartLabelsValues';
+import { data, options } from '../../Datasets/LineChartData';
+import { homeService } from '../../Pages/Service';
 import { IGym } from '../../Interfaces/IGym';
+import { useEffect, useState } from 'react';
+import { Line } from 'react-chartjs-2';
 
 ChartJS.register(
     CategoryScale,
@@ -92,7 +92,7 @@ function toSeconds(date: Date): number {
     const minutes = date.getMinutes() * 60;
     const seconds = date.getSeconds();
 
-    return hours + minutes + seconds;     
+    return hours + minutes + seconds;
 }
 
 function toHoursDecimal(seconds: number): number {

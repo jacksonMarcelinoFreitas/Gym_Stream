@@ -9,6 +9,7 @@ import { PizzaChart } from "../../Components/PizzaChart";
 import { DoughnutChart } from "../../Components/DoughnutChart";
 import { useEffect } from "react";
 import { homeService } from "../Service"; 
+import { useAuth } from "../../Hooks/auth";
 
 export function Home() {
 
