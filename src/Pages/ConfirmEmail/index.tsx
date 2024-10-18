@@ -6,8 +6,8 @@ import { Button } from "../../Components/Button";
 import { MdMarkEmailRead } from "react-icons/md";
 import { Input } from "../../Components/Input"
 import { useSignUp } from '../SignUp/Service';
-import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
+import { useFormik } from 'formik';
 import { useState } from 'react';
 export interface IRegisterUserResponse {
 	externalId: string | null,

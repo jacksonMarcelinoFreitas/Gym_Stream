@@ -21,19 +21,20 @@ function AuthProvider({children}: {children: ReactNode}){
       try {
         const response = await api.post('/v1/auth/login', { login, password, isLoginConfirmation, customerGym });
 
-        //caso a o token esteja nulo significa que o usuario é comum e deve seguir o fluxo de autenticação de usuário comum
-        //retorna sem guardar nada e nem realizar operacoes\
         if(response.status === 200){
 
           if(response.data.token == null){
             return { status: response.status, data: response.data };
           }
           
-          const { token } = response.data;
+          const { token, gym } = response.data;
   
           const { sub, externalId, name, role, exp } = jwtDecode(token) as IJwtPayload;
   
           const user = {
+            gymExternalId: gym.gymExternalId,
+            customer: gym.customer,
+            gym: gym.name,
             email: sub,
             externalId,
             name,
@@ -114,5 +115,5 @@ function useAuth(): IAuthContext{
 
 export { AuthProvider, useAuth }
 
-        // await new Promise(resolve => setTimeout(resolve, 10000));
+// await new Promise(resolve => setTimeout(resolve, 10000));
 

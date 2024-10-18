@@ -6,7 +6,7 @@ import { AdminRoutes } from "./admin.routes";
 import { useAuth } from "../Hooks/auth";
 
 // Ativar o WebSocket Service
-// webSocketService.activate();
+webSocketService.activate();
 
 export function Routes(){
   const { user } = useAuth();
@@ -19,13 +19,13 @@ export function Routes(){
       ) : user.role.includes('ADMIN') ? (
         <AdminRoutes />
       ) : (
-        <AuthRoutes /> // Caso o usuário tenha uma role diferente ou não esteja autorizado.
+        <AuthRoutes />
       )}
     </BrowserRouter>
   )
 }
 
 // Desativar o WebSocket quando a janela for fechada
-// window.addEventListener('beforeunload', () => {
-//   webSocketService.deactivate();
-// });
+window.addEventListener('beforeunload', () => {
+  webSocketService.deactivate();
+});
