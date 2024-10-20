@@ -1,11 +1,11 @@
-// import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { gender, presenceByGender } from "../PizzaChartData";
 
 export const data = {
-	labels: ["Mulher", "Homem"],
+	labels: gender,
 	datasets: [
 		{
 			label: "MANHÃ",
-			data: [12, 19],
+			data: presenceByGender,
 			backgroundColor: ["#00EBB4", "#5800EB"],
 			borderColor: ["rgba(0, 0, 0, 0)"],
 			borderWidth: 1,
@@ -20,12 +20,9 @@ export const options = {
 	plugins: {
 		title: {
 			display: true,
-			text: "Presença por gênero",
+			text: "Presença por gênero dos últimos 7 dias",
 			color: "",
-			font: {
-				size: 16,
-				weight: "bold" as const,
-			},
+			font: { size: 16, weight: 'normal' }
 		},
 		legend: {
 			display: true,

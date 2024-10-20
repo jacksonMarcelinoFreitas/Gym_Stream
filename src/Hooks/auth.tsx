@@ -2,13 +2,14 @@ import { createContext, useContext, useState, useEffect, ReactNode  } from 'reac
 import { IAuthContext }  from '../Interfaces/IAuthContext';
 import { ICredentials } from '../Interfaces/ICredentials'
 import { IJwtPayload } from '../Interfaces/IJwtPayload'
-import { IUser } from '../Interfaces/IUser'
+import { IUser } from '../Interfaces/IUser';
 import { toast } from 'react-toastify';
 import { api } from '../Services/api';
 import { jwtDecode } from 'jwt-decode';
 
 // compartilhará informações aos componentes dentro deste contexto
 const AuthContext = createContext<IAuthContext | undefined>(undefined);
+let User: IUser;
 
 function AuthProvider({children}: {children: ReactNode}){
     const [data, setData] = useState<{ user: IUser | null, token: string }>({
@@ -27,7 +28,7 @@ function AuthProvider({children}: {children: ReactNode}){
             return { status: response.status, data: response.data };
           }
           
-          const { token, gym } = response.data;
+          const { token, gym, userGymExternalId } = response.data;
   
           const { sub, externalId, name, role, exp } = jwtDecode(token) as IJwtPayload;
   
@@ -39,8 +40,11 @@ function AuthProvider({children}: {children: ReactNode}){
             externalId,
             name,
             role,
-            exp
+            exp,
+            userGymExternalId: userGymExternalId
           };
+
+          User = user
   
           setData({user, token});
   
@@ -87,7 +91,7 @@ function AuthProvider({children}: {children: ReactNode}){
       api.defaults.headers.common['Authorization'] = null;
 
       if(token && user){
-          api.defaults.headers.common['Authorization'] = token;
+          // api.defaults.headers.common['Authorization'] = token;
 
           setData({
             user: JSON.parse(user),
@@ -113,7 +117,7 @@ function useAuth(): IAuthContext{
     return context;
 }
 
-export { AuthProvider, useAuth }
+export { AuthProvider, useAuth, User }
 
 // await new Promise(resolve => setTimeout(resolve, 10000));
 

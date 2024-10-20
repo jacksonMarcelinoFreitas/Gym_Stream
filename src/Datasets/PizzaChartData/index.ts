@@ -1,9 +1,21 @@
+import { IUser } from "../../Interfaces/IUser";
+import { homeService } from "../../Pages/Service";
+
+const storedUser = localStorage.getItem("@gymStream:user");
+const user: IUser = storedUser ? JSON.parse(storedUser) : null;
+
+const result = await homeService.getPeopleByPeriodByGenderLast7Days(user)
+const period = result.period
+const numberPeople = result.numberPeople
+export const presenceByGender = result.presenceByGender
+export const gender = result.gender
+
 export const data = {
-  labels: ['Manhã', 'Tarde', 'Noite'],
+  labels: period,
   datasets: [
     {
       label: 'MANHÃ',
-      data: [12, 19, 16],
+      data: numberPeople,
       backgroundColor: [
         '#00EBB4',
         '#5800EB',
@@ -24,12 +36,9 @@ export const options = {
   plugins: {
     title: {
       display: true,
-      text: 'Pessoas x Período',
+      text: 'Quantidade de pessoas por período dos últimos 7 dias',
       color: '',
-      font: {
-        size: 16,
-        weight: 'bold' as const,
-      },
+      font: { size: 16, weight: 'normal' }
     },
     legend: {
       display: true,
