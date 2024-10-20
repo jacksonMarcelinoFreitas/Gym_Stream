@@ -12,9 +12,10 @@ import { homeService } from "../Service";
 import { useAuth } from "../../Hooks/auth";
 
 export function Home() {
+	const { user } = useAuth()
 
 	useEffect(() => {
-		homeService.getMovementGymUser();
+		homeService.getMovementGymUser(user?.customer);
 	},[])
 	 
 	return (

@@ -1,4 +1,5 @@
-import { faker } from '@faker-js/faker';
+import { IUser } from '../../Interfaces/IUser';
+import { homeService } from '../../Pages/Service';
 
   export const options = {
     maintainAspectRatio: false,
@@ -16,8 +17,12 @@ import { faker } from '@faker-js/faker';
         position: 'top' as const,
       },
       title: {
-        display: false,
-        text: 'Chart.js Line Chart',
+        text: 'Quantidade de pessoas dos últimos 7 dias',
+        display: true,
+        align: 'center',
+        color: '#000000',
+        padding: { bottom: 20 },
+        font: { size: 16, weight: 'normal' }
       },
       datalabels: {
         anchor: 'end' as const,
@@ -69,16 +74,20 @@ import { faker } from '@faker-js/faker';
         },
       },
     },
-  };
+  }
 
-  const labels = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+  const storedUser = localStorage.getItem("@gymStream:user");
+  const user: IUser = storedUser ? JSON.parse(storedUser) : null;
+  const result = await homeService.getNumberPeopleLast7days(user)
+  const labels = result.days
+  const numberPeople = result.numberPeople
 
   export const data = {
     labels,
     datasets: [
       {
         label: 'Dataset 1',
-        data: labels.map(() => faker.datatype.number({ min: 0, max: 150 })),
+        data: numberPeople,
         borderColor: "rgb(88, 0, 235)",
         backgroundColor: "rgb(88, 0, 235)",
         borderRadius: 6, // Arredonda as pontas das barras

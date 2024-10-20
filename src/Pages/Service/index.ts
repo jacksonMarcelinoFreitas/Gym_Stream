@@ -3,18 +3,20 @@ import { IMovementGymUser } from "../../Interfaces/IMovementGymUser";
 import { api } from "../../Services/api";
 import { IGym } from "../../Interfaces/IGym";
 import { IGymOpeningClosingHours } from "../../Interfaces/IGymOpeningClosingHours";
+import { IUser } from "../../Interfaces/IUser";
 
 class HomeService {
     private movementGymUserListSubject = new BehaviorSubject<IMovementGymUser[]>([]);
     public movementGymUserList$ = this.movementGymUserListSubject.asObservable();
     private gymSubject = new BehaviorSubject<IGym | null>(null);
     public gym$ = this.gymSubject.asObservable();
+    private zoneOffset = -(new Date().getTimezoneOffset()) / 60
 
-    public async getMovementGymUser(): Promise<void> {
+    public async getMovementGymUser(customer: string | undefined): Promise<void> {
         try {
             this.getGym().subscribe(async gym => {
                 const date = this.getUTCTimeRange(gym.openingHoursUTC, gym.closingHoursUTC);
-                const response = await api.get(`/v1/movement-gym-user/GYM_TEST?startTime=${date.startTime}&finishTime=${date.finishTime}`);
+                const response = await api.get(`/v1/movement-gym-user/${customer}?startTime=${date.startTime}&finishTime=${date.finishTime}`);
                 const movementGymUserList: IMovementGymUser[] = response.data;
 
                 movementGymUserList.map(movementGymUser => {
@@ -33,15 +35,55 @@ class HomeService {
         }
     };
 
-    // public async getAllUserGym(): Promise<void> {
-    //   try {
-    //     const response = await api.get('/v1/user-gym/GYM_TEST?page=0&size=50&sort=name,ASC&startTime=2024-05-19T00:00:00&finishTime=2024-05-19T23:59:59');
-    //     console.log(response.data);
-    //   } catch (error) {
-    //     console.error('Error fetching data:', error);
-    //     throw error;
-    //   }
-    // };
+    public async getTrainingTimeDay(user: IUser | null) {
+        try {
+            const response = await api.get(`/v1/movement-gym-user/training-time-day/${user?.userGymExternalId}?customerGym=${user?.customer}&zoneOffset=${this.zoneOffset}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            throw error;
+        }
+    }
+
+    public async getWeeklyFrequency(user: IUser | null) {
+        try {
+            const response = await api.get(`/v1/movement-gym-user/weekly-frequency/${user?.userGymExternalId}?customerGym=${user?.customer}&zoneOffset=${this.zoneOffset}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            throw error;
+        }
+    }
+
+    public async getNumberPeopleLast7days(user: IUser | undefined) {
+        try {
+            const response = await api.get(`/v1/movement-gym-user/number-people-last-7days/${user?.customer}?zoneOffset=${this.zoneOffset}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            throw error;
+        }
+    }
+
+    public async getNumberPeopleByPeriodPreviousDay(user: IUser | null) {
+        try {
+            const response = await api.get(`/v1/movement-gym-user/number-people-by-period-previous-day/${user?.customer}?zoneOffset=${this.zoneOffset}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            throw error;
+        }
+    }
+
+    public async getPeopleByPeriodByGenderLast7Days(user: IUser | null) {
+        try {
+            const response = await api.get(`/v1/movement-gym-user/people-by-period-by-gender-last-7days/${user?.customer}?zoneOffset=${this.zoneOffset}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            throw error;
+        }
+    }
 
     public setMovementGymUser(movementGymUserToUpdate: IMovementGymUser[]): void {
         let movementGymUserList: IMovementGymUser[] = []
@@ -100,7 +142,7 @@ class HomeService {
     }
 
     private getGym(): Observable<IGym> {
-        return of({openingHoursUTC: '05:30', closingHoursUTC: '23:00' })
+        return of({openingHoursUTC: '00:00', closingHoursUTC: '00:00' })
     }
 }
 

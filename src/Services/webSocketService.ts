@@ -1,6 +1,7 @@
 import { Client } from '@stomp/stompjs';
 import { IMovementGymUser } from '../Interfaces/IMovementGymUser';
 import { homeService } from '../Pages/Service';
+import { IUser } from '../Interfaces/IUser';
 
 class WebSocketService {
     private client: Client;
@@ -17,7 +18,10 @@ class WebSocketService {
                 console.log('Connected');
 
                 if (this.isReconnection) {
-                    homeService.getMovementGymUser()
+                    const storedUser = localStorage.getItem("@gymStream:user");
+                    const user: IUser = storedUser ? JSON.parse(storedUser) : null;
+                
+                    homeService.getMovementGymUser(user.customer)
                     this.isReconnection = false
                 }
 
