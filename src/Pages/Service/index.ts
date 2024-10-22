@@ -1,34 +1,33 @@
-import { BehaviorSubject, Observable, of } from "rxjs";
+import { BehaviorSubject } from "rxjs";
 import { IMovementGymUser } from "../../Interfaces/IMovementGymUser";
 import { api } from "../../Services/api";
-import { IGym } from "../../Interfaces/IGym";
 import { IGymOpeningClosingHours } from "../../Interfaces/IGymOpeningClosingHours";
 import { IUser } from "../../Interfaces/IUser";
+import { IGymOpeningHours } from "../../Interfaces/IGym";
 
 class HomeService {
     private movementGymUserListSubject = new BehaviorSubject<IMovementGymUser[]>([]);
     public movementGymUserList$ = this.movementGymUserListSubject.asObservable();
-    private gymSubject = new BehaviorSubject<IGym | null>(null);
+    private gymSubject = new BehaviorSubject<IGymOpeningHours | null>(null);
     public gym$ = this.gymSubject.asObservable();
     private zoneOffset = -(new Date().getTimezoneOffset()) / 60
 
-    public async getMovementGymUser(customer: string | undefined): Promise<void> {
+    public async getMovementGymUser(user: IUser | null): Promise<void> {
         try {
-            this.getGym().subscribe(async gym => {
-                const date = this.getUTCTimeRange(gym.openingHoursUTC, gym.closingHoursUTC);
-                const response = await api.get(`/v1/movement-gym-user/${customer}?startTime=${date.startTime}&finishTime=${date.finishTime}`);
-                const movementGymUserList: IMovementGymUser[] = response.data;
+            const gym = await this.getGymOpeningHours(user)
+            const date = this.getTimeRange(gym.startOpeningHoursUTC, gym.endOpeningHoursUTC);
+            const response = await api.get(`/v1/movement-gym-user/${user?.customer}?startTime=${date.startTime}&finishTime=${date.finishTime}`);
+            const movementGymUserList: IMovementGymUser[] = response.data;
 
-                movementGymUserList.map(movementGymUser => {
-                    movementGymUser.entryDateTime = this.convertToLocalUTC(movementGymUser.entryDateTime)
-                    if (movementGymUser.departureDateTime)  {
-                        movementGymUser.departureDateTime = this.convertToLocalUTC(movementGymUser.departureDateTime)
-                    }
-                })
-
-                this.movementGymUserListSubject.next(movementGymUserList);
-                this.gymSubject.next(gym)
+            movementGymUserList.map(movementGymUser => {
+                movementGymUser.entryDateTime = this.convertToLocalUTC(movementGymUser.entryDateTime)
+                if (movementGymUser.departureDateTime)  {
+                    movementGymUser.departureDateTime = this.convertToLocalUTC(movementGymUser.departureDateTime)
+                }
             })
+
+            this.movementGymUserListSubject.next(movementGymUserList);
+            this.gymSubject.next(gym)
         } catch (error) {
             console.error('Error fetching data:', error);
             throw error;
@@ -85,6 +84,26 @@ class HomeService {
         }
     }
 
+    public async getGymOpeningHours(user: IUser | null) {
+        try {
+            const response = await api.get(`/v1/gym/opening-hours/${user?.customer}?zoneOffset=${this.zoneOffset}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            throw error;
+        }
+    }
+
+    public async getChannel(user: IUser | null) {
+        try {
+            const response = await api.get(`/v1/channel/${user?.customer}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            throw error;
+        }
+    }
+
     public setMovementGymUser(movementGymUserToUpdate: IMovementGymUser[]): void {
         let movementGymUserList: IMovementGymUser[] = []
 
@@ -126,6 +145,24 @@ class HomeService {
         return { startTime, finishTime };
     }
 
+    public getTimeRange(openingHoursUTC: string, closingHoursUTC: string): IGymOpeningClosingHours {
+        const [localStartHour, localStarMinute] = openingHoursUTC.split(':');
+        const [localEndHour, localEndMinute] = closingHoursUTC.split(':');
+        const localDateStartHour = new Date();
+        const localDateEndHour = new Date();
+
+        if(localStartHour >= localEndHour) {
+            localDateEndHour.setDate(localDateEndHour.getDate() + 1)
+        }
+
+        const startDateUTC = new Date(Date.UTC(localDateStartHour.getFullYear(), localDateStartHour.getMonth(), localDateStartHour.getDate(), parseInt(localStartHour), parseInt(localStarMinute), 0));
+        const endDateUTC = new Date(Date.UTC(localDateEndHour.getFullYear(), localDateEndHour.getMonth(), localDateEndHour.getDate(), (parseInt(localEndHour)), parseInt(localEndMinute), 0));
+        const startTime = startDateUTC.toISOString().slice(0, 19);
+        const finishTime = endDateUTC.toISOString().slice(0, 19);
+
+        return { startTime, finishTime };
+    }
+
     private convertToLocalUTC(utcDateString: string): string {
         const utcDate = new Date(utcDateString);
         const localOffsetInMinutes = utcDate.getTimezoneOffset();
@@ -139,10 +176,6 @@ class HomeService {
         const seconds = String(localDate.getSeconds()).padStart(2, '0');
 
         return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-    }
-
-    private getGym(): Observable<IGym> {
-        return of({openingHoursUTC: '00:00', closingHoursUTC: '00:00' })
     }
 }
 

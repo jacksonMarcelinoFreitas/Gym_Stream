@@ -13,6 +13,7 @@ export function Header(){
     const navigate = useNavigate();
 
     const [openSignOutModal, setOpenSignOutModal] = useState(false);
+    const { user } = useAuth()
 
     const handleOpenSignOutModal = () => {
 		setOpenSignOutModal(true)
@@ -27,8 +28,8 @@ export function Header(){
             <div className="flex items-center gap-2">
                 <img className="h-9 p-0.5 rounded-full ring-2 bg-stone-300 ring-stone-300 dark:ring-stone-300" src={defalt_user} alt="" />
                 <div className="font-medium dark:text-white">
-                    <a href="#" className="text-base text-gray-100">Jhon Doe</a>
-                    <div className="text-xs text-gray-300 dark:text-gray-400">GV Academia</div>
+                    <a href="#" className="text-base text-gray-100">{user?.name}</a>
+                    <div className="text-xs text-gray-300 dark:text-gray-400">{user?.gym}</div>
                 </div>
             </div>
 
@@ -37,6 +38,7 @@ export function Header(){
                     type="button"
                     value="Configurar alerta"
                     Icon={HiBellAlert}
+                    className="inline-flex w-48"
                 />
                 <ButtonText
                     type="button"

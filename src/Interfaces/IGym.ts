@@ -1,4 +1,4 @@
-export interface IGym {
-    openingHoursUTC: string,
-    closingHoursUTC: string
+export interface IGymOpeningHours {
+    startOpeningHoursUTC: string,
+    endOpeningHoursUTC: string
 }
