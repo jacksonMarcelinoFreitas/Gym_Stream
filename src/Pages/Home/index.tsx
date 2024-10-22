@@ -15,7 +15,7 @@ export function Home() {
 	const { user } = useAuth()
 
 	useEffect(() => {
-		homeService.getMovementGymUser(user?.customer);
+		homeService.getMovementGymUser(user);
 	},[])
 	 
 	return (
