@@ -3,7 +3,7 @@ import { IMovementGymUser } from '../../Interfaces/IMovementGymUser';
 import { ILineChartLabelsValues } from './IlineChartLabelsValues';
 import { data, options } from '../../Datasets/LineChartData';
 import { homeService } from '../../Pages/Service';
-import { IGym } from '../../Interfaces/IGym';
+import { IGymOpeningHours } from '../../Interfaces/IGym';
 import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 
@@ -49,7 +49,7 @@ export function LineChart() {
     );
 }
 
-function generateTimeData(movementGymUserList: IMovementGymUser[], gym: IGym): ILineChartLabelsValues {
+function generateTimeData(movementGymUserList: IMovementGymUser[], gym: IGymOpeningHours): ILineChartLabelsValues {
     const events = movementGymUserList.flatMap((event) => {
         const realTime: boolean = (event.departureDateTime == null || event.isDepartureDate) ? true : false;
 
@@ -73,7 +73,7 @@ function generateTimeData(movementGymUserList: IMovementGymUser[], gym: IGym): I
 
     let currentCountPeople: number = 0;
 
-    let labels: Array<number> = [timeToDecimal(gym.openingHoursUTC)]; // Inicia com o horário de abertura da academia
+    let labels: Array<number> = [timeToDecimal(gym.startOpeningHoursUTC)]; // Inicia com o horário de abertura da academia
     let values: Array<number> = [0]; // Inicia com o valor 0 no Y
 
     events.forEach((event) => {

@@ -14,19 +14,21 @@ class WebSocketService {
                 console.log(str);
             },
             reconnectDelay: 5000, // Tenta reconectar a cada 5 segundos se a conexão for perdida
-            onConnect: () => {
+            onConnect: async () => {
                 console.log('Connected');
+                const storedUser = localStorage.getItem("@gymStream:user");
+                const user: IUser = storedUser ? JSON.parse(storedUser) : null;
 
                 if (this.isReconnection) {
-                    const storedUser = localStorage.getItem("@gymStream:user");
-                    const user: IUser = storedUser ? JSON.parse(storedUser) : null;
                 
-                    homeService.getMovementGymUser(user.customer)
+                    homeService.getMovementGymUser(user)
                     this.isReconnection = false
                 }
 
+                let response = await homeService.getChannel(user)
+
                 // Inscreve-se no tópico e define o que fazer ao receber mensagens
-                this.client.subscribe('/topic/output-channel-gym-test', (data) => {
+                this.client.subscribe(`/topic/${response.outputChannel}`, (data) => {
                     // console.log(`Received: ${data.body}`);
                     const res: IMovementGymUser[] = JSON.parse(data.body);
 

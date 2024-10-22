@@ -88,7 +88,7 @@ export function SelectGyms() {
 					customerGym: customer, 
 					isLoginConfirmation: true 
 				})
-				console.log(response)
+				// console.log(response)
 
 				if(response.status === 200){
 					navigate('/')
