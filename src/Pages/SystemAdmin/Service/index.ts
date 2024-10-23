@@ -13,6 +13,12 @@ export interface IListAllUserGym{
 interface IListAllGyms extends IListAllUserGym{
 }
 
+export interface ICreateMovement{
+    userGymExternalId: string,
+    minutesToLeave: number,
+    customerGym: string
+}
+
 export const useMovementGymUser = () => {
     const navigate = useNavigate();
 
@@ -48,7 +54,6 @@ export const useMovementGymUser = () => {
                     'sort': data.sort,
                 }
             });
-            console.log(response)
             return { data: response.data, status: response.status };
         } catch (error: any) {
             if (error.response) {
@@ -60,9 +65,24 @@ export const useMovementGymUser = () => {
         }
     };
 
-    const handleFormatDateToLocalTimeZone = (data) => {
+    const createMovementGymUser = async (data: ICreateMovement) => {
+        try {
+            const response = await api.post('/v1/movement-gym-user', {
+                userGymExternalId: data.userGymExternalId,
+                minutes: data.minutesToLeave,
+                customerGym: data.customerGym,
+            })
+            return { data: response.data, status: response.status };
+        } catch (error: any) {
+            if (error.response) {
+                toast.error(`${error.response.data.message}`);
+            } else {
+                toast.error(`Não foi possível obter os dados de usuários.`);
+            }
+            return { data: error.status };
+        }
         
     }
 
-    return { handleListAllUsersFromGym, handleListAllGyms };
+    return { handleListAllUsersFromGym, handleListAllGyms, createMovementGymUser };
 }

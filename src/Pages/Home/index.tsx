@@ -17,7 +17,7 @@ export function Home() {
 	useEffect(() => {
 		homeService.getMovementGymUser(user);
 	},[])
-	 
+ 
 	return (
 		<div className="h-screen bg-white">
 			<Header />

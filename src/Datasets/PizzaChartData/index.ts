@@ -4,7 +4,7 @@ import { homeService } from "../../Pages/Service";
 const storedUser = localStorage.getItem("@gymStream:user");
 const user: IUser = storedUser ? JSON.parse(storedUser) : null;
 
-const result = await homeService.getPeopleByPeriodByGenderLast7Days(user)
+const result = await homeService.getPeopleByPeriodByGenderLast7Days(user);
 const period = result.period
 const numberPeople = result.numberPeople
 export const presenceByGender = result.presenceByGender

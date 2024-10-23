@@ -1,10 +1,5 @@
-import 'primereact/resources/themes/lara-light-indigo/theme.css';
-import 'primereact/resources/primereact.min.css';
-import 'primeicons/primeicons.css';
-import 'primeflex/primeflex.css'
-
 import { DataTable } from "primereact/datatable";
-import { useMovementGymUser } from './Service/'
+import { ICreateMovement, useMovementGymUser } from './Service/'
 import { useEffect, useState } from "react";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
@@ -16,6 +11,7 @@ import { classNames } from 'primereact/utils';
 import { Calendar } from 'primereact/calendar';
 import { TreeSelect } from 'primereact/treeselect';
 import { format } from 'date-fns';
+import { homeService } from '../Service';
 
 interface IListGymUserResponse {
     userGymExternalId: string
@@ -56,8 +52,15 @@ let emptyGymUser = {
 };
   
 export function SystemAdmin() {
-  const { handleListAllUsersFromGym } = useMovementGymUser();
-  const { handleListAllGyms } = useMovementGymUser();
+    useEffect(() => {
+        if (window.location.pathname.startsWith('/admin')) {
+          import('primereact/resources/themes/lara-light-indigo/theme.css');
+          import('primereact/resources/primereact.min.css');
+          import('primeicons/primeicons.css');
+          import('primeflex/primeflex.css');
+        }
+      }, []);
+  const { handleListAllUsersFromGym, handleListAllGyms, createMovementGymUser } = useMovementGymUser();
   const [ dataGymUsers, setDataGymUsers ] = useState<IListGymUserResponse[]>([])
   const [ dataGyms, setDataGyms ] = useState<IListGymsResponse[]>([])
 
@@ -68,12 +71,13 @@ export function SystemAdmin() {
 
   useEffect(() => {
     async function fetchListAllUsersGymData(){
-      const { data } = await handleListAllUsersFromGym({
-        page: 0, 
-        size: 50, 
-        sort: 'name,ASC', 
-        startTime: '2024-05-19T00:00:00', 
-        finishTime: '2024-05-19T23:59:59' 
+        const date = homeService.getUTCTimeRange('00:00', '00:00');
+        const { data } = await handleListAllUsersFromGym({
+            page: 0, 
+            size: 50, 
+            sort: 'name,ASC', 
+            startTime: date.startTime, 
+            finishTime: date.finishTime
       });
 
       setDataGymUsers(data.content)
@@ -125,7 +129,8 @@ const editUserGym = (userGymData: any) => {
     setUserGymDialog(true);
 };
 
-const createMovement = (userGymData: any) => {
+const createMovement = (data: ICreateMovement) => {
+    const response = createMovementGymUser({ data.userGymExternalId, data.minutesToLeave, data.customerGym })
     setUserGym({ ...userGymData });
     setCreateUserMovementDialog(true);
 };
@@ -189,8 +194,8 @@ const userGymDialogFooter = (
 
 const createUserMovementDialogFooter = (
     <React.Fragment>
-        <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
-        <Button label="Save" icon="pi pi-check" onClick={saveProduct} />
+        <Button label="Cancel" icon="pi pi-times" outlined onClick={hideCreateUserDialog} />
+        <Button label="Criar" icon="pi pi-check" onClick={createMovement} />
     </React.Fragment>
 );
 
@@ -330,7 +335,7 @@ const createUserMovementDialogFooter = (
         </div>
     </Dialog>
 
-    {/* <Dialog 
+    <Dialog 
         visible={createUserMovementDialog} 
         style={{ width: '32rem' }} 
         breakpoints={{ '960px': '75vw', '641px': '90vw' }} 
@@ -342,22 +347,28 @@ const createUserMovementDialogFooter = (
     >
         <div className="field">
             <label htmlFor="time" className="font-bold">Selecione a hora de saída</label>
-            <Calendar 
-                value={userGym.time ? new Date(userGym.time) : null}
+            <Calendar
+                value={userGym.time ? new Date(`1970-01-01T${userGym.time}`) : null}
                 onChange={(e) => {
                     const time = e.value as Date;
-                    const formattedTime = time.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                    const formattedTime = time.toLocaleTimeString('pt-BR', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                    });
                     setUserGym((prev) => ({
-                    ...prev,
-                    time: formattedTime,
+                        ...prev,
+                        time: formattedTime,
                     }));
+                    console.log(userGym)
                 }}
                 showIcon
                 timeOnly
+                hourFormat="24"
             />
+
             {submitted && !userGym.dateBirth && <small className="p-error">DateBirth is required.</small>}
         </div>
-    </Dialog> */}
+    </Dialog>
     </>
   );
 
