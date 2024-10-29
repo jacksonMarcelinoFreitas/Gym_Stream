@@ -9,7 +9,6 @@ import { jwtDecode } from 'jwt-decode';
 
 // compartilhará informações aos componentes dentro deste contexto
 const AuthContext = createContext<IAuthContext | undefined>(undefined);
-let User: IUser;
 
 function AuthProvider({children}: {children: ReactNode}){
     const [data, setData] = useState<{ user: IUser | null, token: string }>({
@@ -33,6 +32,7 @@ function AuthProvider({children}: {children: ReactNode}){
           const { sub, externalId, name, role, exp } = jwtDecode(token) as IJwtPayload;
   
           const user = {
+            userGymExternalId: userGymExternalId,
             gymExternalId: gym.gymExternalId,
             customer: gym.customer,
             gym: gym.name,
@@ -40,11 +40,8 @@ function AuthProvider({children}: {children: ReactNode}){
             externalId,
             name,
             role,
-            exp,
-            userGymExternalId: userGymExternalId
+            exp
           };
-
-          User = user
   
           setData({user, token});
   
@@ -117,7 +114,7 @@ function useAuth(): IAuthContext{
     return context;
 }
 
-export { AuthProvider, useAuth, User }
+export { AuthProvider, useAuth }
 
 // await new Promise(resolve => setTimeout(resolve, 10000));
 

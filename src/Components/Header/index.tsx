@@ -1,5 +1,6 @@
 import defalt_user from "../../Assets/images/user_default.png"
 import { Modal } from "flowbite-react/components/Modal";
+import { useNavigate } from "react-router-dom";
 import { HiBellAlert } from "react-icons/hi2";
 import { ButtonText } from "../ButtonText";
 import { TbLogout2 } from "react-icons/tb";
@@ -9,11 +10,18 @@ import { useState } from "react";
 
 export function Header(){
     const { signOut } = useAuth();
+    const navigate = useNavigate();
+
     const [openSignOutModal, setOpenSignOutModal] = useState(false);
     const { user } = useAuth()
 
     const handleOpenSignOutModal = () => {
 		setOpenSignOutModal(true)
+	}
+
+    const handleSignOut = () => {
+        signOut()
+		navigate('/login')
 	}
     return(
         <header className='flex justify-between items-center w-screen p-2 rounded-b-lg px-6 bg-orange-primary'>
@@ -47,7 +55,7 @@ export function Header(){
                     </Modal.Body> */}
                 <Modal.Footer>
                     <Button onClick={() => setOpenSignOutModal(false)} value='Cancelar' className='bg-orange-900 w-full hover:bg-orange-700'/>
-                    <Button onClick={() => signOut()} value='Sair' className='bg-orange-primary w-full hover:bg-orange-700'/>
+                    <Button onClick={handleSignOut} value='Sair' className='bg-orange-primary w-full hover:bg-orange-700'/>
                 </Modal.Footer>
             </Modal>
         </header>

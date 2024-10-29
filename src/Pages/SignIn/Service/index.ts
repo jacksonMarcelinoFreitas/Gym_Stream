@@ -13,9 +13,9 @@ export const useSignIn = () => {
             if(response.status === 200){
                 if(response.data.admin == true){
                     toast.success('Seja bem vindo administrador!')
-                    navigate('/')
+                    navigate('/home')
                 }else{
-                    navigate('/login/selectGym', { state: { login: data.login, password: data.password } })
+                    navigate('/login/select-gym', { state: { login: data.login, password: data.password } })
                 }
             }else{
                 toast.error(`${response.data.message}`);
