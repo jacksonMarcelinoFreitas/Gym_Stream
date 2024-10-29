@@ -14,7 +14,7 @@ export const data = {
   labels: period,
   datasets: [
     {
-      label: 'MANHÃ',
+      label: 'Qtd',
       data: numberPeople,
       backgroundColor: [
         '#00EBB4',
@@ -36,7 +36,7 @@ export const options = {
   plugins: {
     title: {
       display: true,
-      text: 'Quantidade de pessoas por período dos últimos 7 dias',
+      text: 'Últimos 7 dias',
       color: '',
       font: { size: 16, weight: 'normal' }
     },
@@ -51,11 +51,13 @@ export const options = {
       },
     },
     datalabels: {
-      // formatter: (value: number, ctx: any) => {
-      //   const total = ctx.chart.data.datasets[0].data.reduce((acc: number, curr: number) => acc + curr, 0);
-      //   const percentage = Math.round((value / total) * 100) + '%';
-      //   return percentage;
-      // },
+      formatter: (value: number, ctx: any) => {
+        if (value == 0) {
+          return null;
+        } else {
+          return value;
+        }
+      },
       color: '#fff',
       font: {
         size: 14,

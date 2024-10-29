@@ -17,7 +17,7 @@ import { homeService } from '../../Pages/Service';
         position: 'top' as const,
       },
       title: {
-        text: 'Quantidade de pessoas dos últimos 7 dias',
+        text: 'Últimos 7 dias',
         display: true,
         align: 'center',
         color: '#000000',
@@ -32,6 +32,11 @@ import { homeService } from '../../Pages/Service';
             size: 14,
             weight: 'bold' as const,
         },
+        display: function(context: any) {
+          const value = context.dataset.data[context.dataIndex];
+          
+          return value !== 0;
+        }
     },
     },
     scales: {
@@ -86,7 +91,7 @@ import { homeService } from '../../Pages/Service';
     labels,
     datasets: [
       {
-        label: 'Dataset 1',
+        label: 'Qtd',
         data: numberPeople,
         borderColor: "rgb(88, 0, 235)",
         backgroundColor: "rgb(88, 0, 235)",

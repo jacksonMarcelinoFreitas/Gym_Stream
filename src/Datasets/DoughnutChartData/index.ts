@@ -4,7 +4,7 @@ export const data = {
 	labels: gender,
 	datasets: [
 		{
-			label: "MANHÃ",
+			label: "Qtd",
 			data: presenceByGender,
 			backgroundColor: ["#00EBB4", "#5800EB"],
 			borderColor: ["rgba(0, 0, 0, 0)"],
@@ -20,7 +20,7 @@ export const options = {
 	plugins: {
 		title: {
 			display: true,
-			text: "Presença por gênero dos últimos 7 dias",
+			text: "Últimos 7 dias",
 			color: "",
 			font: { size: 16, weight: 'normal' }
 		},
@@ -41,7 +41,12 @@ export const options = {
 					0
 				);
 				const percentage = Math.round((value / total) * 100) + "%";
-				return percentage;
+
+				if (parseInt(percentage) == 0) {
+					return null;
+				} else {
+					return percentage;
+				}
 			},
 			color: "#fff",
 			font: {

@@ -19,7 +19,7 @@ export const options = {
       },
       title: {
         display: true,
-        text: 'Quantidade de pessoas por periodo do dia anterior',
+        text: 'Dia anterior',
         align: 'center',
         color: '#000000',
         padding: { bottom: 20 },
@@ -101,7 +101,7 @@ export const options = {
     labels,
     datasets: [
       {
-        label: 'Dataset 1',
+        label: 'Qtd',
         data: numberPeople,
         borderColor: "rgb(88, 0, 235)",
         backgroundColor: "rgb(88, 0, 235)",
