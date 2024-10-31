@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* src/index.css ou outro arquivo principal de estilo */
+
 :root {
     --full-size: calc(100% - 56px);
 }

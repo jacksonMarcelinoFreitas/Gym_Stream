@@ -17,7 +17,7 @@ export const useSignUp = () => {
             });
             if (response.status === 201) {
                 toast.success(`${response.data.message}`);
-                navigate("/register/confirmEmail", { state: { email: data.email } })
+                navigate("/register/confirm-email", { state: { email: data.email } })
             } else {
                 toast.error("Ocorreu um erro ao registrar o usuário.");
             }
