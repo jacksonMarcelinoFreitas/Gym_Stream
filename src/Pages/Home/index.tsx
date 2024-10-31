@@ -8,7 +8,7 @@ import { BarChartX } from "../../Components/BarChartX";
 import { PizzaChart } from "../../Components/PizzaChart";
 import { DoughnutChart } from "../../Components/DoughnutChart";
 import { useEffect } from "react";
-import { homeService } from "../Service"; 
+import { homeService } from "../Service";
 import { useAuth } from "../../Hooks/auth";
 
 export function Home() {
@@ -16,42 +16,49 @@ export function Home() {
 
 	useEffect(() => {
 		homeService.getMovementGymUser(user);
-	},[])
- 
+	}, [])
+
 	return (
-		<div className="h-screen bg-white">
+		<div className="h-full bg-white">
 			<Header />
-			<main className="h-[calc(100vh-3.5rem)] bg-light-color p-4">
-				<div className="w-full h-full grid grid-cols-2 grid-rows-[1fr_2fr_2fr] gap-4">
-					<div className="grid grid-cols-2 gap-4 row-span-1">
-						<div className="w-full h-full rounded-xl overflow-hidden bg-white">
+			<main className="bg-light-color p-4">
+				<div className="flex gap-3 -bottom-6 flex-wrap">
+
+					<div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 w-full">
+						<div className="rounded-xl bg-white">
 							<CardChart />
 						</div>
-						<div className="w-full h-full rounded-xl overflow-hidden bg-white">
+						<div className="rounded-xl bg-white">
 							<CardChart2 />
 						</div>
-					</div>
-					<div className="w-full h-full rounded-xl overflow-hidden bg-white">
-						<CardChart3 />
-					</div>
-					<div className="w-full h-full rounded-xl flex justify-center items-center p-4 bg-white">
-					{/* <div style={{minWidth: '137vh', minHeight: '85vh'}} className="w-full h-full rounded-xl flex justify-center items-center p-4 bg-white"> */}
-						<LineChart />
-					</div>
-					<div className="w-full h-full rounded-xl flex justify-center items-center p-4 bg-white">
-						<BarChartY />
-					</div>
-					<div className="w-full h-full rounded-xl flex justify-center items-center p-4 bg-white">
-						<BarChartX />
-					</div>
-					<div className="grid grid-cols-2 gap-4">
-						<div className="w-full h-full rounded-xl flex justify-center items-center p-4 bg-white">
-							<PizzaChart />
-						</div>
-						<div className="w-full h-full rounded-xl flex justify-center items-center p-4 bg-white">
-							<DoughnutChart />
+						<div className="rounded-xl bg-white sm:col-span-2 lg:col-span-1">
+							<CardChart3 />
 						</div>
 					</div>
+
+					<div className="grid gap-3 grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 w-full">
+						<div className="rounded-xl bg-white" style={{minHeight: '355px'}}>
+							<LineChart />
+						</div>
+						<div className="rounded-xl bg-white" style={{minHeight: '355px'}}>
+							<BarChartY />
+						</div>
+					</div>
+
+					<div className="grid gap-3 grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 w-full">
+						<div className="rounded-xl bg-white" style={{minHeight: '355px'}}>
+							<BarChartX />
+						</div>
+						<div className="grid gap-3 grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 w-full">
+							<div className="rounded-xl bg-white" style={{minHeight: '355px'}}>
+								<PizzaChart />
+							</div>
+							<div className="rounded-xl bg-white" style={{minHeight: '355px'}}>
+								<DoughnutChart />
+							</div>
+						</div>
+					</div>
+
 				</div>
 			</main>
 		</div>

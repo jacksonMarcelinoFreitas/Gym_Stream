@@ -44,7 +44,7 @@ export function LineChart() {
     }, []);
 
     return (
-        <div className='h-full w-full'>
+        <div className='h-full w-full' >
             <Line options={options} data={chartData}/>
         </div>
     );
