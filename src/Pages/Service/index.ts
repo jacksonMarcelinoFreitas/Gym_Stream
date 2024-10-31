@@ -74,9 +74,19 @@ class HomeService {
         }
     }
 
-    public async getPeopleByPeriodByGenderLast7Days(user: IUser | null) {
+    public async getPeopleByPeriodLast7Days(user: IUser | null) {
         try {
-            const response = await api.get(`/v1/movement-gym-user/people-by-period-by-gender-last-7days/${user?.customer}?zoneOffset=${this.zoneOffset}`);
+            const response = await api.get(`/v1/movement-gym-user/people-by-period-last-7days/${user?.customer}?zoneOffset=${this.zoneOffset}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            throw error;
+        }
+    }
+
+    public async getPeopleByGenderLast7Days(user: IUser | null) {
+        try {
+            const response = await api.get(`/v1/movement-gym-user/people-by-gender-last-7days/${user?.customer}?zoneOffset=${this.zoneOffset}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching data:', error);

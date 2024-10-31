@@ -24,6 +24,23 @@ function AuthProvider({children}: {children: ReactNode}){
         if(response.status === 200){
 
           if(response.data.token == null){
+            const user = {
+              userGymExternalId: '',
+              gymExternalId: '',
+              customer: '',
+              gym: '',
+              email: '',
+              externalId: '',
+              name: '',
+              role: [],
+              exp: 0,
+              listGyms: response.data.listGyms
+            };
+
+            const token = "";
+    
+            setData({user, token});
+            
             return { status: response.status, data: response.data };
           }
           
@@ -40,7 +57,8 @@ function AuthProvider({children}: {children: ReactNode}){
             externalId,
             name,
             role,
-            exp
+            exp,
+            listGyms: response.data.listGyms
           };
   
           setData({user, token});

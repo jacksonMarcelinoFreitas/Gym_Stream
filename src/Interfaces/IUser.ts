@@ -8,4 +8,5 @@ export interface IUser{
     gym: string;
     gymExternalId: string;
     userGymExternalId: string;
+    listGyms: Array<any>
 }

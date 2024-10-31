@@ -25,15 +25,17 @@ class WebSocketService {
                     this.isReconnection = false
                 }
 
-                let response = await homeService.getChannel(user)
+                if (user != null) {
+                    let response = await homeService.getChannel(user)
+                    
+                    // Inscreve-se no tópico e define o que fazer ao receber mensagens
+                    this.client.subscribe(`/topic/${response.outputChannel}`, (data) => {
+                        // console.log(`Received: ${data.body}`);
+                        const res: IMovementGymUser[] = JSON.parse(data.body);
 
-                // Inscreve-se no tópico e define o que fazer ao receber mensagens
-                this.client.subscribe(`/topic/${response.outputChannel}`, (data) => {
-                    // console.log(`Received: ${data.body}`);
-                    const res: IMovementGymUser[] = JSON.parse(data.body);
-
-                    homeService.setMovementGymUser(res);
-                });
+                        homeService.setMovementGymUser(res);
+                    });
+                }
             },
             onStompError: (frame) => {
                 console.error(`Broker reported error: ${frame.headers['data']}`);
