@@ -3,7 +3,7 @@ import { IMovementGymUser } from "../../Interfaces/IMovementGymUser";
 import { api } from "../../Services/api";
 import { IGymOpeningClosingHours } from "../../Interfaces/IGymOpeningClosingHours";
 import { IUser } from "../../Interfaces/IUser";
-import { IGymOpeningHours } from "../../Interfaces/IGym";
+import { IGymOpeningHours, IGymOpeningHoursLocal } from "../../Interfaces/IGym";
 
 class HomeService {
     private movementGymUserListSubject = new BehaviorSubject<IMovementGymUser[]>([]);
@@ -74,9 +74,19 @@ class HomeService {
         }
     }
 
-    public async getPeopleByPeriodByGenderLast7Days(user: IUser | null) {
+    public async getPeopleByPeriodLast7Days(user: IUser | null) {
         try {
-            const response = await api.get(`/v1/movement-gym-user/people-by-period-by-gender-last-7days/${user?.customer}?zoneOffset=${this.zoneOffset}`);
+            const response = await api.get(`/v1/movement-gym-user/people-by-period-last-7days/${user?.customer}?zoneOffset=${this.zoneOffset}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            throw error;
+        }
+    }
+
+    public async getPeopleByGenderLast7Days(user: IUser | null) {
+        try {
+            const response = await api.get(`/v1/movement-gym-user/people-by-gender-last-7days/${user?.customer}?zoneOffset=${this.zoneOffset}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -161,6 +171,25 @@ class HomeService {
         const finishTime = endDateUTC.toISOString().slice(0, 19);
 
         return { startTime, finishTime };
+    }
+
+    public getTimeRangeLocal(openingHoursUTC: string, closingHoursUTC: string): IGymOpeningHoursLocal {
+        const [localStartHour, localStarMinute] = openingHoursUTC.split(':');
+        const [localEndHour, localEndMinute] = closingHoursUTC.split(':');
+        const localDateStartHour = new Date();
+        const localDateEndHour = new Date();
+
+        const timezoneOffset = new Date().getTimezoneOffset() / 60;
+        if(localStartHour >= localEndHour) {
+            localDateEndHour.setDate(localDateEndHour.getDate() + 1)
+        }
+
+        const startDateUTC = new Date(Date.UTC(localDateStartHour.getFullYear(), localDateStartHour.getMonth(), localDateStartHour.getDate(), parseInt(localStartHour) - timezoneOffset, parseInt(localStarMinute), 0));
+        const endDateUTC = new Date(Date.UTC(localDateEndHour.getFullYear(), localDateEndHour.getMonth(), localDateEndHour.getDate(), (parseInt(localEndHour)), parseInt(localEndMinute), 0));
+        const startOpeningHours = startDateUTC.toISOString().split("T")[1].slice(0, 8);
+        const endOpeningHours = endDateUTC.toISOString().split("T")[1].slice(0, 8);
+
+        return { startOpeningHours, endOpeningHours };
     }
 
     private convertToLocalUTC(utcDateString: string): string {
