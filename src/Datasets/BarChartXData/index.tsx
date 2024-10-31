@@ -61,7 +61,7 @@ export function useBarChartXData() {
                 text: 'Dia anterior',
                 align: 'center',
                 color: '#000000',
-                padding: { bottom: 20 },
+                padding: { bottom: 20, top: 10 },
                 font: { size: 16, weight: 'normal' }
               },
               datalabels: {
@@ -129,6 +129,11 @@ export function useBarChartXData() {
         
               },
             },
+            layout: {
+              padding: {
+                right: 20
+              }
+            }
           });
         }
       } catch (error) {

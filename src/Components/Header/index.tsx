@@ -24,7 +24,7 @@ export function Header(){
 		navigate('/login')
 	}
     return(
-        <header className='flex justify-between items-center w-screen p-2 rounded-b-lg px-6 bg-orange-primary'>
+        <header className='flex justify-between items-center w-screen p-2 rounded-b-lg px-6 bg-orange-primary max-w-full' style={{flexFlow: 'wrap'}}>
             <div className="flex items-center gap-2">
                 <img className="h-9 p-0.5 rounded-full ring-2 bg-stone-300 ring-stone-300 dark:ring-stone-300" src={defalt_user} alt="" />
                 <div className="font-medium dark:text-white">

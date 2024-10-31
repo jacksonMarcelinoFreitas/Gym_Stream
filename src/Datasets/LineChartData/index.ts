@@ -10,7 +10,7 @@ export const options = {
 			display: true,
 			align: 'center' as const,
 			color: '#000000',
-			padding: { bottom: 20 },
+			padding: { bottom: 20, top: 10 },
 			font: { size: 16, weight: 'normal' } as const
 		  },
 		customCanvasBackgroundColor: {
@@ -96,6 +96,11 @@ export const options = {
 			beginAtZero: true
 		},
 	},
+	layout: {
+		padding: {
+		  right: 20
+		}
+	}
 };
 
 const labels: any = [];
