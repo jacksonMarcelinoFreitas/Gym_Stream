@@ -64,7 +64,7 @@ export function SignIn() {
 
 					<Button
 						type='submit'
-						value='Registrar'
+						value='Entrar'
 						isLoading={formik.isSubmitting}
                 		disabled={!formik.isValid || formik.isSubmitting}
 						className=' bg-orange-primary hover:bg-orange-500 focus:ring-2 focus:outline-none focus:ring-orange-300'

@@ -111,11 +111,6 @@ export function SelectGyms() {
 					<>
 						<h1 className='text-lg font-bold size-6 w-full'>Academias do usuário</h1>
 						<div className='w-full flex flex-col gap-1'>
-							<Label
-								htmlFor='gym'
-								value='Sexo'
-								className='block text-sm font-medium text-gray-900 dark:text-white'
-							/>
 							<Select
 								required
 								id='gyms'
@@ -143,7 +138,7 @@ export function SelectGyms() {
 						</div>
 					</>
 				:
-					listGymUser.admin == null ?
+					listGymUser.listGyms.length == 0 ?
 						<p className='w-full text-center font-medium text-xl text-orange-400'>Não foram encontrados academias para este usuário!</p>
 					: 
 						<p className='w-full text-center font-medium text-xl text-orange-400'>Usuário não encontrado!</p>

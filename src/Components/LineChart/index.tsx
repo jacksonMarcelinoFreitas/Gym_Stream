@@ -3,7 +3,7 @@ import { IMovementGymUser } from '../../Interfaces/IMovementGymUser';
 import { ILineChartLabelsValues } from './IlineChartLabelsValues';
 import { data, options } from '../../Datasets/LineChartData';
 import { homeService } from '../../Pages/Service';
-import { IGymOpeningHours } from '../../Interfaces/IGym';
+import { IGymOpeningHoursLocal } from '../../Interfaces/IGym';
 import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 
@@ -24,7 +24,8 @@ export function LineChart() {
         const subscription = homeService.movementGymUserList$.subscribe(movementGymUserList => {
             homeService.gym$.subscribe(gym => {
                 if (movementGymUserList.length != 0 && gym) {
-                    const updatedData = generateTimeData(movementGymUserList, gym);
+                    const gymOpeningHours = homeService.getTimeRangeLocal(gym.startOpeningHoursUTC, gym.endOpeningHoursUTC)
+                    const updatedData = generateTimeData(movementGymUserList, gymOpeningHours);
                     setChartData(prevData => ({
                         ...prevData,
                         labels: updatedData.labels,
@@ -49,7 +50,7 @@ export function LineChart() {
     );
 }
 
-function generateTimeData(movementGymUserList: IMovementGymUser[], gym: IGymOpeningHours): ILineChartLabelsValues {
+function generateTimeData(movementGymUserList: IMovementGymUser[], gym: IGymOpeningHoursLocal): ILineChartLabelsValues {
     const events = movementGymUserList.flatMap((event) => {
         const realTime: boolean = (event.departureDateTime == null || event.isDepartureDate) ? true : false;
 
@@ -73,7 +74,7 @@ function generateTimeData(movementGymUserList: IMovementGymUser[], gym: IGymOpen
 
     let currentCountPeople: number = 0;
 
-    let labels: Array<number> = [timeToDecimal(gym.startOpeningHoursUTC)]; // Inicia com o horário de abertura da academia
+    let labels: Array<number> = [timeToDecimal(gym.startOpeningHours)]; // Inicia com o horário de abertura da academia
     let values: Array<number> = [0]; // Inicia com o valor 0 no Y
 
     events.forEach((event) => {
