@@ -36,28 +36,58 @@ export function Home() {
 						</div>
 					</div>
 
-					<div className="grid gap-3 grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 w-full">
-						<div className="rounded-xl bg-white" style={{minHeight: '355px'}}>
-							<LineChart />
-						</div>
-						<div className="rounded-xl bg-white" style={{minHeight: '355px'}}>
-							<BarChartY />
-						</div>
-					</div>
+					{user?.role.includes('ADMIN') &&
+						<div className="grid gap-3 grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 w-full">
+							<div className="rounded-xl bg-white" style={{ minHeight: '355px' }}>
+								<LineChart />
+							</div>
+							<div className="rounded-xl bg-white" style={{ minHeight: '355px' }}>
+								<BarChartY />
+							</div>
+						</div>}
 
-					<div className="grid gap-3 grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 w-full">
-						<div className="rounded-xl bg-white" style={{minHeight: '355px'}}>
+					{!user?.role.includes('ADMIN') &&
+						<div className="grid gap-3 grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 w-full">
+							<div className="rounded-xl bg-white" style={{ minHeight: '355px' }}>
+								<LineChart />
+							</div>
+						</div>}
+
+					{user?.role.includes('ADMIN') && <div className="grid gap-3 grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 w-full">
+						<div className="rounded-xl bg-white" style={{ minHeight: '355px' }}>
 							<BarChartX />
 						</div>
-						<div className="grid gap-3 grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 w-full">
-							<div className="rounded-xl bg-white" style={{minHeight: '355px'}}>
-								<PizzaChart />
-							</div>
-							<div className="rounded-xl bg-white" style={{minHeight: '355px'}}>
-								<DoughnutChart />
-							</div>
+
+						{user?.role.includes('ADMIN') &&
+							<div className="grid gap-3 grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 w-full">
+								<div className="rounded-xl bg-white" style={{ minHeight: '355px' }}>
+									<PizzaChart />
+								</div>
+								<div className="rounded-xl bg-white" style={{ minHeight: '355px' }}>
+									<DoughnutChart />
+								</div>
+							</div>}		
+					</div>}
+
+					{!user?.role.includes('ADMIN') && <div className="grid gap-3 grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 w-full">
+						<div className="rounded-xl bg-white" style={{ minHeight: '355px' }}>
+							<BarChartX />
 						</div>
-					</div>
+
+						<div className="rounded-xl bg-white" style={{ minHeight: '355px' }}>
+							<BarChartY />
+						</div>
+
+						{user?.role.includes('ADMIN') &&
+							<div className="grid gap-3 grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 w-full">
+								<div className="rounded-xl bg-white" style={{ minHeight: '355px' }}>
+									<PizzaChart />
+								</div>
+								<div className="rounded-xl bg-white" style={{ minHeight: '355px' }}>
+									<DoughnutChart />
+								</div>
+							</div>}		
+					</div>}
 
 				</div>
 			</main>
