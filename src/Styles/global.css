@@ -12,3 +12,43 @@ body {
     font-family: 'Montserrat', sans-serif;
     color: black;
 }
+
+/* Estilos básicos do toggle container */
+.group {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    outline: none;
+}
+
+/* Estilos do contêiner de fundo do toggle */
+.group > div {
+    background-color: #fb923c;
+    border-radius: 9999px;
+    border: 2px solid #9c561d;
+}
+
+/* Círculo interno do toggle */
+.group > div::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background-color: #ffffff; /* branco para o círculo interno */
+    border-radius: 50%; /* arredondado */
+    border: 1px solid #bebcbb; /* borda branca */
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+/* Estado ativo do toggle */
+.group[aria-checked="true"] > div {
+    background-color: #EB3B00;
+    border-color: rgba(133, 52, 28, 0.281);
+}
+
+.group[aria-checked="true"] > div::after {
+    transform: translateX(20px); /* move o círculo para a direita */
+}
+
