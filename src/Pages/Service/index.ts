@@ -114,6 +114,11 @@ class HomeService {
         }
     }
 
+    public destroy() {
+        this.movementGymUserListSubject.next([])
+        this.gymSubject.next(null)
+    }
+
     public setMovementGymUser(movementGymUserToUpdate: IMovementGymUser[]): void {
         let movementGymUserList: IMovementGymUser[] = []
 

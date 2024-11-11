@@ -6,6 +6,8 @@ import { IUser } from '../Interfaces/IUser';
 import { toast } from 'react-toastify';
 import { api } from '../Services/api';
 import { jwtDecode } from 'jwt-decode';
+import { webSocketService } from '../Services/webSocketService';
+import { homeService } from '../Pages/Service';
 
 // compartilhará informações aos componentes dentro deste contexto
 const AuthContext = createContext<IAuthContext | undefined>(undefined);
@@ -67,6 +69,8 @@ function AuthProvider({children}: {children: ReactNode}){
           localStorage.setItem("@gymStream:user", JSON.stringify(user));
   
           api.defaults.headers.common['Authorization'] = token;
+
+          webSocketService.activate();
         }
 
         return { status: response.status, data: response.data };
@@ -95,6 +99,10 @@ function AuthProvider({children}: {children: ReactNode}){
       localStorage.removeItem("@gymStream:token");
 
       api.defaults.headers.common['Authorization'] = null;
+
+      // Desativar o WebSocket
+      webSocketService.deactivate();
+      homeService.destroy();
 
       setData({ user: null, token: '' });
     }
