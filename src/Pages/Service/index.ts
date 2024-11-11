@@ -4,6 +4,7 @@ import { api } from "../../Services/api";
 import { IGymOpeningClosingHours } from "../../Interfaces/IGymOpeningClosingHours";
 import { IUser } from "../../Interfaces/IUser";
 import { IGymOpeningHours, IGymOpeningHoursLocal } from "../../Interfaces/IGym";
+import { IResourceSetting, IResourceSettingNotification } from "../../Interfaces/IResourceSetting";
 
 class HomeService {
     private movementGymUserListSubject = new BehaviorSubject<IMovementGymUser[]>([]);
@@ -118,6 +119,41 @@ class HomeService {
         this.movementGymUserListSubject.next([])
         this.gymSubject.next(null)
     }
+    
+    public async getUserResourceSetting(user: IUser | null) {
+        try {
+            const response = await api.get(`/v1/user/resource-setting/${user?.externalId}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            throw error;
+        }
+    }
+
+    public async setUserResourceSetting(user: IUser | null, resource: IResourceSetting[] ) {
+        try {
+            const response = await api.put(`/v1/user/user-resource-setting/${user?.externalId}`, resource);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            throw error;
+        }
+    }
+
+    public async setUserNotification(resource: IResourceSettingNotification){
+        const updateResource = {
+            ...resource,
+            startTimeUTC: this.getUTCHours(resource.startTimeUTC),
+            endTimeUTC: this.getUTCHours(resource.endTimeUTC)
+        }
+        try {
+            const response = await api.post(`/v1/notification`, updateResource);
+            return { data: response.data, status: response.status }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            throw error;
+        }
+    }
 
     public setMovementGymUser(movementGymUserToUpdate: IMovementGymUser[]): void {
         let movementGymUserList: IMovementGymUser[] = []
@@ -140,6 +176,7 @@ class HomeService {
 
         this.movementGymUserListSubject.next(movementGymUserList);
     };
+    
 
     public getUTCTimeRange(openingHoursUTC: string, closingHoursUTC: string): IGymOpeningClosingHours {
         const [localStartHour, localStarMinute] = openingHoursUTC.split(':');
@@ -158,6 +195,27 @@ class HomeService {
         const finishTime = endDateUTC.toISOString().slice(0, 19);
 
         return { startTime, finishTime };
+    }
+
+    public getUTCHours(hour: string){
+        const [hourValue, minuteValue] = hour.split(':');
+    
+        const currentDate = new Date();
+    
+        const timezoneOffset = currentDate.getTimezoneOffset() / 60;
+    
+        const dateUTC = new Date(Date.UTC(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate(),
+            parseInt(hourValue) - timezoneOffset,
+            parseInt(minuteValue),
+            0
+        ));
+    
+        const formatedHour = dateUTC.toISOString().slice(11, 16);
+    
+        return formatedHour;
     }
 
     public getTimeRange(openingHoursUTC: string, closingHoursUTC: string): IGymOpeningClosingHours {

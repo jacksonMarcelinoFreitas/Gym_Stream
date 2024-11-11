@@ -1,5 +1,6 @@
+import { ReactNode } from "react";
 export interface IButtonTypes {
-  value: string;
+  value: string | ReactNode;
   disabled?: boolean;
   isLoading?: boolean;
   className?: string;

@@ -1,5 +1,6 @@
 import defalt_user from "../../Assets/images/user_default.png"
 import { Modal } from "flowbite-react/components/Modal";
+import { RiSettings4Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { HiBellAlert } from "react-icons/hi2";
 import { ButtonText } from "../ButtonText";
@@ -8,7 +9,13 @@ import { useAuth } from "../../Hooks/auth";
 import { Button } from "../Button"
 import { useState } from "react";
 
-export function Header(){
+interface HeaderProps {
+    setOpenSettingAlertModal: (isOpen: boolean) => void;
+    setOpenModal: (isOpen: boolean) => void;
+    isHidden: boolean
+}
+
+export function Header({ setOpenModal, setOpenSettingAlertModal, isHidden=true }: HeaderProps){
     const { signOut } = useAuth();
     const navigate = useNavigate();
 
@@ -23,6 +30,8 @@ export function Header(){
         signOut()
 		navigate('/login')
 	}
+
+    
     return(
         <header className='flex justify-between items-center w-screen p-2 rounded-b-lg px-6 bg-orange-primary max-w-full' style={{flexFlow: 'wrap'}}>
             <div className="flex items-center gap-2">
@@ -38,7 +47,14 @@ export function Header(){
                     type="button"
                     value="Configurar alerta"
                     Icon={HiBellAlert}
-                    className="inline-flex w-48"
+                    className={`inline-flex w-auto ${isHidden&& "hidden"}`}
+                    onClick={() => setOpenSettingAlertModal(true)}
+                />
+                <Button
+                    type="button"
+                    value={<RiSettings4Fill size={24}/>}
+                    onClick={() => setOpenModal(true)}
+                    className="w-full"
                 />
                 <ButtonText
                     type="button"
@@ -50,11 +66,8 @@ export function Header(){
 
             <Modal dismissible show={openSignOutModal} onClose={() => setOpenSignOutModal(false)}>
                 <Modal.Header>Deseja mesmo sair?</Modal.Header>
-                    {/* <Modal.Body>
-                        colocar imagem aqui
-                    </Modal.Body> */}
                 <Modal.Footer>
-                    <Button onClick={() => setOpenSignOutModal(false)} value='Cancelar' className='bg-orange-900 w-full hover:bg-orange-700'/>
+                    <Button onClick={() => setOpenSignOutModal(false)} value='Cancelar' className='bg-violet-primary w-full hover:bg-violet-600'/>
                     <Button onClick={handleSignOut} value='Sair' className='bg-orange-primary w-full hover:bg-orange-700'/>
                 </Modal.Footer>
             </Modal>

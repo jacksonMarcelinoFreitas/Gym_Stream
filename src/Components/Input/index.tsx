@@ -1,6 +1,7 @@
+import classNames from 'classnames';
 import { IInputTypes } from '../../Interfaces/IInput';
 
-export function Input({ Icon, htmlFor, valueLabel, placeholder, id, type, value, disabled, error, touched, onBlur, onChange, onClick, ...rest }: IInputTypes) {
+export function Input({ Icon, htmlFor, valueLabel, placeholder, id, type, value, disabled, error, touched, onBlur, onChange, onClick, className, ...rest }: IInputTypes) {
   return (
     <>
       <div className='w-full'>
@@ -24,7 +25,7 @@ export function Input({ Icon, htmlFor, valueLabel, placeholder, id, type, value,
             onChange={onChange}
             disabled={disabled}
             placeholder={placeholder}
-            className="z-0 bg-white border border-orange-200 text-gray-900 text-sm rounded-lg focus:ring-orange-300 focus:border-orange-300 block w-full ps-10 p-2.5"
+            className={classNames(`z-0 bg-white border-2 border-orange-200 text-gray-900 text-sm rounded-lg focus:ring-orange-300 focus:border-orange-300 block w-full p-2.5 ${Icon ? "ps-10" : ""}`, className)}
           />
         </div>
         {
