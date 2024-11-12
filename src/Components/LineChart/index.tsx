@@ -6,6 +6,7 @@ import { homeService } from '../../Pages/Service';
 import { IGymOpeningHoursLocal } from '../../Interfaces/IGym';
 import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
+import { Empty_data_2 } from '../../Assets/images/empty_data_svgs';
 
 ChartJS.register(
     CategoryScale,
@@ -18,6 +19,7 @@ ChartJS.register(
 );
 
 export function LineChart() {
+	const [totalData, setTotalData] = useState(0)
     const [chartData, setChartData] = useState<ChartData<'line'>>(data);
 
     useEffect(() => {
@@ -43,10 +45,27 @@ export function LineChart() {
         return () => subscription.unsubscribe();
     }, []);
 
+    useEffect(() => {
+		if (chartData && chartData.datasets[0].data.length != 0) {
+            console.log(chartData.datasets[0].data)
+			let total = 0
+			chartData.datasets[0].data.forEach((num: any) => {
+				total += num;
+			});
+			setTotalData(total)
+		}
+	}, [chartData]);
+
     return (
-        <div className='h-full w-full' >
-            <Line options={options} data={chartData}/>
-        </div>
+        (totalData == 0) ? 
+            <div className="h-80 w-full p-8 flex flex-col items-center justify-center gap-4">
+				<Empty_data_2/>
+				<p className="text-xl font-medium text-gray-500 text-center">Ainda não há fluxo de pessoas para hoje.</p>
+			</div>
+        :
+            <div className='h-full w-full' >
+                <Line options={options} data={chartData}/>
+            </div>
     );
 }
 

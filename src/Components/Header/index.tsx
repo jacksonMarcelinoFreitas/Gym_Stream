@@ -48,7 +48,7 @@ export function Header({ setOpenModal, setOpenSettingAlertModal, isHidden=true }
                     value="Configurar alerta"
                     Icon={HiBellAlert}
                     className={`inline-flex w-auto ${isHidden&& "hidden"}`}
-                    onClick={() => setOpenSettingAlertModal(true)}
+                    onClick={() => {setOpenSettingAlertModal(true)}}
                 />
                 <Button
                     type="button"

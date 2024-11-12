@@ -5,6 +5,7 @@ import { IGymOpeningClosingHours } from "../../Interfaces/IGymOpeningClosingHour
 import { IUser } from "../../Interfaces/IUser";
 import { IGymOpeningHours, IGymOpeningHoursLocal } from "../../Interfaces/IGym";
 import { IResourceSetting, IResourceSettingNotification } from "../../Interfaces/IResourceSetting";
+import { INotification } from "../../Interfaces/INotification";
 
 class HomeService {
     private movementGymUserListSubject = new BehaviorSubject<IMovementGymUser[]>([]);
@@ -171,6 +172,30 @@ class HomeService {
 
         this.movementGymUserListSubject.next(movementGymUserList);
     };
+
+    public async getUserNotification(user: IUser | null){
+        try {
+            const response = await api.get(`/v1/notification/${user?.externalId}`, { 
+                params: { 
+                    customerGym: user?.customer
+                }
+            });
+            return { data: response.data, status: response.status }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            throw error;
+        }
+    }
+
+    public async deleteUserNotification(notification: INotification | null){
+        try {
+            const response = await api.delete(`/v1/notification/${notification?.notificationExternalId}`);
+            return { data: response.data, status: response.status }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            throw error;
+        }
+    }
     
 
     public getUTCTimeRange(openingHoursUTC: string, closingHoursUTC: string): IGymOpeningClosingHours {
@@ -192,27 +217,22 @@ class HomeService {
         return { startTime, finishTime };
     }
 
-    public getUTCHours(hour: string){
-        const [hourValue, minuteValue] = hour.split(':');
-    
-        const currentDate = new Date();
-    
-        const timezoneOffset = currentDate.getTimezoneOffset() / 60;
-    
-        const dateUTC = new Date(Date.UTC(
-            currentDate.getFullYear(),
-            currentDate.getMonth(),
-            currentDate.getDate(),
-            parseInt(hourValue) - timezoneOffset,
-            parseInt(minuteValue),
-            0
-        ));
-    
-        const formatedHour = dateUTC.toISOString().slice(11, 16);
-    
-        return formatedHour;
-    }
+    private getUTCHours(localTime: string): string {
+        const [hours, minutes] = localTime.split(':').map(Number);
 
+        if (isNaN(hours) || isNaN(minutes)) {
+            throw new Error('Invalid time string');
+        }
+
+        const localDate = new Date();
+        localDate.setHours(hours, minutes, 0, 0);
+
+        const utcHours = String(localDate.getUTCHours()).padStart(2, '0');
+        const utcMinutes = String(localDate.getUTCMinutes()).padStart(2, '0');
+
+        return `${utcHours}:${utcMinutes}`
+    }
+    
     public getTimeRange(openingHoursUTC: string, closingHoursUTC: string): IGymOpeningClosingHours {
         const [localStartHour, localStarMinute] = openingHoursUTC.split(':');
         const [localEndHour, localEndMinute] = closingHoursUTC.split(':');
