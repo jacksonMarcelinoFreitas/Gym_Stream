@@ -60,7 +60,7 @@ export function LineChart() {
         (totalData == 0) ? 
             <div className="h-80 w-full p-8 flex flex-col items-center justify-center gap-4">
 				<Empty_data_2/>
-				<p className="text-xl font-medium text-gray-500 text-center">Ainda não há fluxo de pessoas para hoje.</p>
+				<p className="text-xl font-medium text-gray-500 text-center text-wrap">Ainda não há fluxo de pessoas para hoje.</p>
 			</div>
         :
             <div className='h-full w-full' >

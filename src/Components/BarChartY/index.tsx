@@ -26,7 +26,7 @@ export function BarChartY() {
 		(totalData == 0) ? 
 			<div className="h-60 flex flex-col items-center justify-center gap-4">
 				<Empty_data_3/>
-				<p className="text-xl font-medium text-gray-500 text-center">Ainda não há registros de dias anteriores.</p>
+				<p className="text-xl font-medium text-gray-500 text-center text-wrap">Ainda não há registros de dias anteriores.</p>
 			</div>
 		:
 			<div className='h-full w-full flex justify-center items-center'>
