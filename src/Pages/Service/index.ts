@@ -116,6 +116,11 @@ class HomeService {
         }
     }
 
+    public destroy() {
+        this.movementGymUserListSubject.next([])
+        this.gymSubject.next(null)
+    }
+    
     public async getUserResourceSetting(user: IUser | null) {
         try {
             const response = await api.get(`/v1/user/resource-setting/${user?.externalId}`);
