@@ -77,7 +77,6 @@ export function SelectGyms() {
 							customerGym: customer,
 							isLoginConfirmation: true
 						})
-						// console.log(response)
 
 						if (response.status === 200) {
 							navigate('/login')
@@ -98,7 +97,7 @@ export function SelectGyms() {
 					{
 						listGymUser.listGyms.length > 0 ?
 							<>
-								<h1 className='text-lg font-bold size-6 w-full'>Academias do usuário</h1>
+								<h1 className='text-lg font-bold size-6 w-full text-nowrap'>Academias do usuário</h1>
 								<div className='w-full flex flex-col gap-1'>
 									<Select
 										required
@@ -129,16 +128,16 @@ export function SelectGyms() {
 							:
 							listGymUser.listGyms.length == 0 ?
 								<p className='w-full text-center font-medium text-xl text-orange-400'>Não foram encontrados academias para este usuário!</p>
-								:
+							:
 								<p className='w-full text-center font-medium text-xl text-orange-400'>Usuário não encontrado!</p>
 
 					}
-					<div className='flex w-ful justify-center gap-2 mt-4'>
+					<div className='flex flex-row gap-2'>
 						<Button
 							type='button'
 							value={listGymUser.listGyms.length > 0 ? 'Cancelar' : 'Voltar'}
 							onClick={() => { navigate('/login') }}
-							className='text-stone-700 bg-orange-900 shadow-xl hover:bg-orange-500 focus:ring-2 focus:outline-none focus:ring-gray-500'
+							className='text-stone-700 bg-violet-primary shadow-xl hover:bg-violet-900 focus:ring-2 focus:outline-none focus:ring-gray-500'
 						/>
 						{listGymUser.listGyms.length > 0 && (
 							<Button
@@ -155,7 +154,7 @@ export function SelectGyms() {
 			</div>
 			<div
 				style={{ backgroundImage: `url(${login_image})` }}
-				className="relative h-full w-2/5 flex flex-col items-center justify-evenly bg-stone-200 rounded-r-2xl overflow-hidden bg-no-repeat bg-center bg-cover rounded-l-2xl"
+				className="relative h-full w-2/5 flex flex-col items-center justify-evenly bg-stone-200 rounded-r-2xl overflow-hidden bg-no-repeat bg-center bg-cover rounded-l-2xl phone:hidden tablet:flex"
 			>
 				<div className='absolute w-full h-full z-0 bg-gradient-to-t from-orange-400 from-0%' ></div>
 			</div>
