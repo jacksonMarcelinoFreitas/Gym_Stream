@@ -70,7 +70,6 @@ function AuthProvider({children}: {children: ReactNode}){
   
           api.defaults.headers.common['Authorization'] = token;
 
-          webSocketService.activate();
         }
 
         return { status: response.status, data: response.data };
