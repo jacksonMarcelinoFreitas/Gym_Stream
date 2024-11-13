@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 import TimePicker from "../../Components/Timepicker";
 import { Input } from "../../Components/Input";
 import { HiOutlineBellAlert } from "react-icons/hi2";
+import { webSocketService } from "../../Services/webSocketService";
 
 export function Home() {
 	const { user } = useAuth()
@@ -45,6 +46,7 @@ export function Home() {
 
 
 	useEffect(() => {
+		webSocketService.activate();
 		homeService.getMovementGymUser(user);
 		const subscription = homeService.gym$.subscribe((data) => {
 			setGymOpeningHours(data);
